@@ -1,9 +1,11 @@
-Handlebars.registerHelper("toJSON", function (object) {
-  return new Handlebars.SafeString(JSON.stringify(object));
-});
-Handlebars.registerHelper("getParam", function (param) {
-  const url = new URL(window.location.href);
-  return url.searchParams.get(param);
+$(document).ready(function () {
+  Handlebars.registerHelper("toJSON", function (object) {
+    return new Handlebars.SafeString(JSON.stringify(object));
+  });
+  Handlebars.registerHelper("getParam", function (param) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(param);
+  });
 });
 
 authHeader = {
