@@ -5,6 +5,7 @@ Handlebars.registerHelper("getParam", function (param) {
   const url = new URL(window.location.href);
   return url.searchParams.get(param);
 });
+
 authHeader = {
   Authorization: "Basic " + btoa("JOil58wOWFVYGJZ8pnt:x"),
   "Content-Type": "application/json"
@@ -16,31 +17,29 @@ defaultImage = `<svg width="40" height="40" viewBox="0 0 24 24" xmlns="http://ww
                     <path fill="none" d="M0 0h24v24H0z" />
                 </svg>`;
 
-function activeMenuItem() {
-  (function () {
-    var pushState = history.pushState;
-    var replaceState = history.replaceState;
+(function () {
+  var pushState = history.pushState;
+  var replaceState = history.replaceState;
 
-    history.pushState = function () {
-      pushState.apply(history, arguments);
-      window.dispatchEvent(new Event("pushstate"));
-      window.dispatchEvent(new Event("locationchange"));
-    };
+  history.pushState = function () {
+    pushState.apply(history, arguments);
+    window.dispatchEvent(new Event("pushstate"));
+    window.dispatchEvent(new Event("locationchange"));
+  };
 
-    history.replaceState = function () {
-      replaceState.apply(history, arguments);
-      window.dispatchEvent(new Event("replacestate"));
-      window.dispatchEvent(new Event("locationchange"));
-    };
+  history.replaceState = function () {
+    replaceState.apply(history, arguments);
+    window.dispatchEvent(new Event("replacestate"));
+    window.dispatchEvent(new Event("locationchange"));
+  };
 
-    window.addEventListener("popstate", function () {
-      window.dispatchEvent(new Event("locationchange"));
-    });
-  })();
-
-  window.addEventListener("locationchange", function () {
-    const currentUrl = window.location.pathname;
-    $(".nav-item").removeClass("active");
-    $('.nav-item[href="' + currentUrl + '"]').addClass("active");
+  window.addEventListener("popstate", function () {
+    window.dispatchEvent(new Event("locationchange"));
   });
-}
+})();
+
+window.addEventListener("locationchange", function () {
+  const currentUrl = window.location.pathname;
+  $(".nav-item").removeClass("active");
+  $('.nav-item[href="' + currentUrl + '"]').addClass("active");
+});
