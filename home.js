@@ -34,6 +34,7 @@ function renderHome(lang) {
         renderProcess(processList);
       }
     });
+
     function getUniqueAppInfo(jsonData) {
       const uniqueAppInfo = new Map();
 
