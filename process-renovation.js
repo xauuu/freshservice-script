@@ -1,6 +1,6 @@
-const ticket_id = document.currentScript.dataset.ticket_id;
-const requested_item_id = document.currentScript.dataset.requested_item_id;
-const ticket_state = document.currentScript.dataset.ticket_state;
+const ticket_id = $("#process-renovation").data("ticket_id");
+const requested_item_id = $("#process-renovation").data("requested_item_id");
+const ticket_state = $("#process-renovation").data("ticket_state");
 console.log({ ticket_id, requested_item_id, ticket_state });
 
 $(document).ready(function () {
