@@ -24,14 +24,39 @@ var formSchema = {
   name: "Make a construction plan",
   fields: [
     {
-      id: "2978f820-704b-46c7-9f88-110e14e34a8c",
-      name: "first_name",
-      label: "First Name",
-      type: "TEXT",
+      name: "expected_start_time",
+      label: "Expected start time",
+      type: "DATE",
+      position: 1,
+      required: true,
+      Placeholder: "Enter…",
+      choices: []
+    },
+    {
+      name: "expected_end_time",
+      label: "Expected end time",
+      type: "DATE",
+      position: 2,
+      required: true,
+      Placeholder: "Enter…",
+      choices: []
+    },
+    {
+      name: "estimated_cost",
+      label: "Estimated cost",
+      type: "NUMBER",
       position: 3,
       required: true,
-      placeholder: "Enter…",
-      hint: "Please provide a text of at max 100 characters",
+      Placeholder: "Enter…",
+      choices: []
+    },
+    {
+      name: "ground_development_department_notes",
+      label: "Ground development department notes",
+      type: "PARAGRAPH",
+      position: 4,
+      required: true,
+      Placeholder: "Enter…",
       choices: []
     }
   ]
