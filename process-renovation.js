@@ -1,8 +1,9 @@
-$(document).ready(function () {
-  const ticket_id = document.currentScript.dataset.ticket_id;
-  const requested_item_id = document.currentScript.dataset.requested_item_id;
-  const ticket_state = document.currentScript.dataset.ticket_state;
+const ticket_id = document.currentScript.dataset.ticket_id;
+const requested_item_id = document.currentScript.dataset.requested_item_id;
+const ticket_state = document.currentScript.dataset.ticket_state;
+console.log({ ticket_id, requested_item_id, ticket_state });
 
+$(document).ready(function () {
   var modal = document.querySelector("fw-modal#modal-contractor");
   var buttonSubmit = document.querySelector("#contractor-submit");
   var vendors = document.getElementById("vendors");
