@@ -5,12 +5,14 @@ requester_id = $("#process-renovation").data("requester_id");
 
 $(document).ready(function () {
     const tabs = ["information", "planning", "awaiting-approval", "implement", "payment"];
+    console.log(tabs);
     $.ajax({
         type: "GET",
         headers: authHeader,
         url: "https://trusisor.freshservice.com/api/v2/objects/27000052769/records?query=app_code%20%3A%20%27retail%27%20AND%20process_code%20%3A%20%27renovation%27",
         dataType: "json",
         success: function (response) {
+            console.log(response);
             getGroup(response.records);
         },
         error: function (err) {
