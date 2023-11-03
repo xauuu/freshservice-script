@@ -42,9 +42,15 @@ $(document).ready(function () {
     }
 
     function checkTab(views) {
+        const activeTab = tab[ticket_state];
         views.forEach((view) => {
             if (tabs.includes(view)) {
-                $(`li.custom-tab-item[data-tab="#${view}"]`).removeClass("muted").removeAttr("disabled");
+                const item = $(`li.custom-tab-item[data-tab="#${view}"]`);
+                item.removeClass("muted").removeAttr("disabled");
+                if (view == activeTab) {
+                    item.addClass("active").siblings().removeClass("active");
+                    $(`#${view}`).addClass("active").siblings().removeClass("active");
+                }
             }
         });
     }
