@@ -42,7 +42,7 @@ $(document).ready(function () {
     }
 
     function checkTab(views) {
-        const activeTab = tab[ticket_state];
+        const activeTab = tabs[ticket_state];
         views.forEach((view) => {
             if (tabs.includes(view)) {
                 const item = $(`li.custom-tab-item[data-tab="#${view}"]`);
