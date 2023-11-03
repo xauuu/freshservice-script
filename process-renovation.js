@@ -1,7 +1,54 @@
 ticket_id = $("#process-renovation").data("ticket_id");
 requested_item_id = $("#process-renovation").data("requested_item_id");
 ticket_state = $("#process-renovation").data("ticket_state");
-console.log({ ticket_id, requested_item_id, ticket_state });
+requester_id = $("#process-renovation").data("requester_id");
+
+$(document).ready(function () {
+    const tabs = ["information", "planning", "awaiting-approval", "implement", "payment"];
+    $.ajax({
+        type: "GET",
+        headers: authHeader,
+        url: "https://trusisor.freshservice.com/api/v2/objects/27000052769/records?query=app_code%20%3A%20%27retail%27%20AND%20process_code%20%3A%20%27renovation%27",
+        dataType: "json",
+        success: function (response) {
+            getGroup(response.records);
+        },
+        error: function (err) {
+            console.log("Error in get role: " + err);
+        }
+    });
+
+    async function getGroup(list) {
+        for (let i = 0; i < list.length; i++) {
+            const element = list[i];
+            const { data } = element;
+            try {
+                const fetch = await $.ajax({
+                    type: "GET",
+                    headers: authHeader,
+                    url: `https://trusisor.freshservice.com/api/v2/requester_groups/${data.group}/members`,
+                    dataType: "json"
+                });
+
+                if (fetch.requesters.some((requester) => requester.id === requester_id)) {
+                    const views = data.views.split(";");
+                    checkTab(views);
+                    return;
+                }
+            } catch (error) {
+                console.log("Error in get group: " + error);
+            }
+        }
+    }
+
+    function checkTab(views) {
+        views.forEach((view) => {
+            if (tabs.includes(view)) {
+                $(`li.custom-tab-item[data-tab="#${view}"]`).removeClass("muted").removeAttr("disabled");
+            }
+        });
+    }
+});
 
 $(document).ready(function () {
     var modal = document.querySelector("fw-modal#modal-contractor");
