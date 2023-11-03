@@ -1,3 +1,5 @@
+{{Todays Date}}
+
 ticket_id = $("#process-renovation").data("ticket_id");
 requested_item_id = $("#process-renovation").data("requested_item_id");
 ticket_state = $("#process-renovation").data("ticket_state");
