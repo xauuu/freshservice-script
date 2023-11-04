@@ -4,7 +4,7 @@ ticket_state = $("#process-renovation").data("ticket_state");
 requester_id = $("#process-renovation").data("requester_id");
 
 $(document).ready(function () {
-    const tabs = ["information", "planning", "awaiting-approval", "implement", "payment"];
+    const tabs = ["information", "planning", "awaiting-approval", "implement", "checkout"];
     $.ajax({
         type: "GET",
         headers: authHeader,
@@ -56,216 +56,216 @@ $(document).ready(function () {
     }
 });
 
-$(document).ready(function () {
-    var modal = document.querySelector("fw-modal#modal-contractor");
-    var buttonSubmit = document.querySelector("#contractor-submit");
-    var vendors = document.getElementById("vendors");
-    vendors.search = (value, source) => {
-        return fetch("https://trusisor.freshservice.com/api/v2/vendors", {
-            method: "GET",
-            headers: authHeader
-        })
-            .then((resp) => resp.json())
-            .then((data) => {
-                const result = data.vendors.filter((x) => convertViToEn(x.name).includes(convertViToEn(value)));
-                return result.map((x) => {
-                    return {
-                        text: x.name,
-                        subText: x.email,
-                        value: x.email
-                    };
-                });
-            });
-    };
-    if (ticket_state == 0) {
-        buttonSubmit.addEventListener("click", async (e) => {
-            const values = await vendors.getSelectedItem();
-            const resultObject = {};
+// $(document).ready(function () {
+//     var modal = document.querySelector("fw-modal#modal-contractor");
+//     var buttonSubmit = document.querySelector("#contractor-submit");
+//     var vendors = document.getElementById("vendors");
+//     vendors.search = (value, source) => {
+//         return fetch("https://trusisor.freshservice.com/api/v2/vendors", {
+//             method: "GET",
+//             headers: authHeader
+//         })
+//             .then((resp) => resp.json())
+//             .then((data) => {
+//                 const result = data.vendors.filter((x) => convertViToEn(x.name).includes(convertViToEn(value)));
+//                 return result.map((x) => {
+//                     return {
+//                         text: x.name,
+//                         subText: x.email,
+//                         value: x.email
+//                     };
+//                 });
+//             });
+//     };
+//     if (ticket_state == 0) {
+//         buttonSubmit.addEventListener("click", async (e) => {
+//             const values = await vendors.getSelectedItem();
+//             const resultObject = {};
 
-            values.forEach((item, index) => {
-                resultObject[`vendor_${index + 1}_email`] = item.value;
-            });
-            console.log(resultObject);
-            jQuery.ajax({
-                url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
-                type: "PUT",
-                headers: authHeader,
-                data: JSON.stringify({
-                    custom_fields: resultObject
-                }),
-                success: function (data) {
-                    jQuery.ajax({
-                        url: `/api/v2/tickets/${ticket_id}`,
-                        type: "PUT",
-                        headers: authHeader,
-                        data: JSON.stringify({
-                            custom_fields: { ticket_state: 1 }
-                        }),
-                        success: function (data) {
-                            document.querySelector("#type_toast_right").trigger({ type: "success", content: "Lập hồ sơ mời thầu thành công" });
-                            modal.close();
-                        },
-                        error: function (err) {
-                            console.log("Error in update ticket: " + err);
-                        }
-                    });
-                },
-                error: function (err) {
-                    console.log("Error in update ticket: " + err);
-                }
-            });
-        });
-    }
-    if (ticket_state == 1) {
-        var form = document.querySelector("#form-response");
-        document.querySelector("#response-submit").addEventListener("click", async (e) => {
-            const { values, isValid } = await form.doSubmit(e);
-            jQuery.ajax({
-                url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
-                type: "PUT",
-                headers: authHeader,
-                data: JSON.stringify({
-                    custom_fields: values
-                }),
-                success: function (data) {
-                    document.querySelector("#type_toast_right").trigger({ type: "success", content: "Cập nhật phan hồi của nhà thầu thành công" });
-                    modal.close();
-                },
-                error: function (err) {
-                    console.log("Error in update ticket: " + err);
-                }
-            });
-        });
-        document.querySelector("#confirm-submit").addEventListener("click", async (e) => {
-            const { values, isValid } = await form.doSubmit(e);
-            jQuery.ajax({
-                url: `/api/v2/tickets/${ticket_id}`,
-                type: "PUT",
-                headers: authHeader,
-                data: JSON.stringify({
-                    custom_fields: { ticket_state: 2 }
-                }),
-                success: function (data) {
-                    document.querySelector("#type_toast_right").trigger({ type: "success", content: "Xác nhận phản hồi của nhà thầu thành công" });
-                    modal.close();
-                },
-                error: function (err) {
-                    console.log("Error in update ticket: " + err);
-                }
-            });
-        });
-    }
+//             values.forEach((item, index) => {
+//                 resultObject[`vendor_${index + 1}_email`] = item.value;
+//             });
+//             console.log(resultObject);
+//             jQuery.ajax({
+//                 url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
+//                 type: "PUT",
+//                 headers: authHeader,
+//                 data: JSON.stringify({
+//                     custom_fields: resultObject
+//                 }),
+//                 success: function (data) {
+//                     jQuery.ajax({
+//                         url: `/api/v2/tickets/${ticket_id}`,
+//                         type: "PUT",
+//                         headers: authHeader,
+//                         data: JSON.stringify({
+//                             custom_fields: { ticket_state: 1 }
+//                         }),
+//                         success: function (data) {
+//                             document.querySelector("#type_toast_right").trigger({ type: "success", content: "Lập hồ sơ mời thầu thành công" });
+//                             modal.close();
+//                         },
+//                         error: function (err) {
+//                             console.log("Error in update ticket: " + err);
+//                         }
+//                     });
+//                 },
+//                 error: function (err) {
+//                     console.log("Error in update ticket: " + err);
+//                 }
+//             });
+//         });
+//     }
+//     if (ticket_state == 1) {
+//         var form = document.querySelector("#form-response");
+//         document.querySelector("#response-submit").addEventListener("click", async (e) => {
+//             const { values, isValid } = await form.doSubmit(e);
+//             jQuery.ajax({
+//                 url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
+//                 type: "PUT",
+//                 headers: authHeader,
+//                 data: JSON.stringify({
+//                     custom_fields: values
+//                 }),
+//                 success: function (data) {
+//                     document.querySelector("#type_toast_right").trigger({ type: "success", content: "Cập nhật phan hồi của nhà thầu thành công" });
+//                     modal.close();
+//                 },
+//                 error: function (err) {
+//                     console.log("Error in update ticket: " + err);
+//                 }
+//             });
+//         });
+//         document.querySelector("#confirm-submit").addEventListener("click", async (e) => {
+//             const { values, isValid } = await form.doSubmit(e);
+//             jQuery.ajax({
+//                 url: `/api/v2/tickets/${ticket_id}`,
+//                 type: "PUT",
+//                 headers: authHeader,
+//                 data: JSON.stringify({
+//                     custom_fields: { ticket_state: 2 }
+//                 }),
+//                 success: function (data) {
+//                     document.querySelector("#type_toast_right").trigger({ type: "success", content: "Xác nhận phản hồi của nhà thầu thành công" });
+//                     modal.close();
+//                 },
+//                 error: function (err) {
+//                     console.log("Error in update ticket: " + err);
+//                 }
+//             });
+//         });
+//     }
 
-    if (ticket_state == 2) {
-        var inputs = document.querySelectorAll('input[name="email_contractor"]');
-        var formatted_values = [];
+//     if (ticket_state == 2) {
+//         var inputs = document.querySelectorAll('input[name="email_contractor"]');
+//         var formatted_values = [];
 
-        inputs.forEach(function (input) {
-            var value = input.value;
-            var email_contractor = { value: value, text: value };
-            formatted_values.push(email_contractor);
-        });
-        document.querySelector("#email_selected_contractor").options = formatted_values;
-        document.querySelector("#selected-submit").addEventListener("click", async (e) => {
-            const values = await document.querySelector("#email_selected_contractor").getSelectedItem();
-            const email_selected_contractor = values[0]?.value;
-            jQuery.ajax({
-                url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
-                type: "PUT",
-                headers: authHeader,
-                data: JSON.stringify({
-                    custom_fields: { email_selected_contractor }
-                }),
-                success: function (data) {
-                    jQuery.ajax({
-                        url: `/api/v2/tickets/${ticket_id}`,
-                        type: "PUT",
-                        headers: authHeader,
-                        data: JSON.stringify({
-                            custom_fields: { ticket_state: 3 }
-                        }),
-                        success: function (data) {
-                            document.querySelector("#type_toast_right").trigger({ type: "success", content: "Chọn nhà thầu chính thức thành công" });
-                            modal.close();
-                        },
-                        error: function (err) {
-                            console.log("Error in update ticket: " + err);
-                        }
-                    });
-                },
-                error: function (err) {
-                    console.log("Error in update ticket: " + err);
-                }
-            });
-        });
-    }
-});
+//         inputs.forEach(function (input) {
+//             var value = input.value;
+//             var email_contractor = { value: value, text: value };
+//             formatted_values.push(email_contractor);
+//         });
+//         document.querySelector("#email_selected_contractor").options = formatted_values;
+//         document.querySelector("#selected-submit").addEventListener("click", async (e) => {
+//             const values = await document.querySelector("#email_selected_contractor").getSelectedItem();
+//             const email_selected_contractor = values[0]?.value;
+//             jQuery.ajax({
+//                 url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
+//                 type: "PUT",
+//                 headers: authHeader,
+//                 data: JSON.stringify({
+//                     custom_fields: { email_selected_contractor }
+//                 }),
+//                 success: function (data) {
+//                     jQuery.ajax({
+//                         url: `/api/v2/tickets/${ticket_id}`,
+//                         type: "PUT",
+//                         headers: authHeader,
+//                         data: JSON.stringify({
+//                             custom_fields: { ticket_state: 3 }
+//                         }),
+//                         success: function (data) {
+//                             document.querySelector("#type_toast_right").trigger({ type: "success", content: "Chọn nhà thầu chính thức thành công" });
+//                             modal.close();
+//                         },
+//                         error: function (err) {
+//                             console.log("Error in update ticket: " + err);
+//                         }
+//                     });
+//                 },
+//                 error: function (err) {
+//                     console.log("Error in update ticket: " + err);
+//                 }
+//             });
+//         });
+//     }
+// });
 
-$(document).ready(function () {
-    var modal = document.querySelector("fw-modal#modal-ground");
-    if (ticket_state == 0) {
-        var form = document.querySelector("#form-ground");
-        var buttonSubmit = document.querySelector("#submit");
-        buttonSubmit.addEventListener("click", async (e) => {
-            const { values, isValid } = await form.doSubmit(e);
-            jQuery.ajax({
-                url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
-                type: "PUT",
-                headers: authHeader,
-                data: JSON.stringify({
-                    custom_fields: values
-                }),
-                success: function (data) {
-                    jQuery.ajax({
-                        url: `/api/v2/tickets/${ticket_id}`,
-                        type: "PUT",
-                        headers: authHeader,
-                        data: JSON.stringify({
-                            custom_fields: { ticket_state: 1 }
-                        }),
-                        success: function (data) {
-                            document.querySelector("#type_toast_right").trigger({ type: "success", content: "Lập kế hoạch thành công" });
-                            modal.close();
-                        },
-                        error: function (err) {
-                            console.log("Error in update ticket: " + err);
-                        }
-                    });
-                },
-                error: function (err) {
-                    console.log("Error in update ticket: " + err);
-                }
-            });
-        });
-    }
+// $(document).ready(function () {
+//     var modal = document.querySelector("fw-modal#modal-ground");
+//     if (ticket_state == 0) {
+//         var form = document.querySelector("#form-ground");
+//         var buttonSubmit = document.querySelector("#submit");
+//         buttonSubmit.addEventListener("click", async (e) => {
+//             const { values, isValid } = await form.doSubmit(e);
+//             jQuery.ajax({
+//                 url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
+//                 type: "PUT",
+//                 headers: authHeader,
+//                 data: JSON.stringify({
+//                     custom_fields: values
+//                 }),
+//                 success: function (data) {
+//                     jQuery.ajax({
+//                         url: `/api/v2/tickets/${ticket_id}`,
+//                         type: "PUT",
+//                         headers: authHeader,
+//                         data: JSON.stringify({
+//                             custom_fields: { ticket_state: 1 }
+//                         }),
+//                         success: function (data) {
+//                             document.querySelector("#type_toast_right").trigger({ type: "success", content: "Lập kế hoạch thành công" });
+//                             modal.close();
+//                         },
+//                         error: function (err) {
+//                             console.log("Error in update ticket: " + err);
+//                         }
+//                     });
+//                 },
+//                 error: function (err) {
+//                     console.log("Error in update ticket: " + err);
+//                 }
+//             });
+//         });
+//     }
 
-    if (ticket_state == 3) {
-        var upload = document.querySelector("#contract-upload");
-        document.querySelector("#upload-submit").addEventListener("click", async (e) => {
-            const values = await upload.getFiles();
-            console.log(values[0].file);
-            var formData = new FormData();
-            formData.append("attachments[]", values[0].file);
-            jQuery.ajax({
-                url: `/api/v2/tickets/${ticket_id}`,
-                type: "PUT",
-                headers: authHeaderNotCT,
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    window.location.reload(true);
-                    document.querySelector("#type_toast_right").trigger({ type: "success", content: "Tải hợp đồng lên thành công" });
-                    upload.reset();
-                },
-                error: function (err) {
-                    document.querySelector("#type_toast_right").trigger({ type: "error", content: "Có lỗi xảy ra" });
-                    console.log("Error in update ticket: " + err);
-                }
-            });
-        });
-    }
-});
+//     if (ticket_state == 3) {
+//         var upload = document.querySelector("#contract-upload");
+//         document.querySelector("#upload-submit").addEventListener("click", async (e) => {
+//             const values = await upload.getFiles();
+//             console.log(values[0].file);
+//             var formData = new FormData();
+//             formData.append("attachments[]", values[0].file);
+//             jQuery.ajax({
+//                 url: `/api/v2/tickets/${ticket_id}`,
+//                 type: "PUT",
+//                 headers: authHeaderNotCT,
+//                 data: formData,
+//                 processData: false,
+//                 contentType: false,
+//                 success: function (data) {
+//                     window.location.reload(true);
+//                     document.querySelector("#type_toast_right").trigger({ type: "success", content: "Tải hợp đồng lên thành công" });
+//                     upload.reset();
+//                 },
+//                 error: function (err) {
+//                     document.querySelector("#type_toast_right").trigger({ type: "error", content: "Có lỗi xảy ra" });
+//                     console.log("Error in update ticket: " + err);
+//                 }
+//             });
+//         });
+//     }
+// });
 
 columnsApproval = [
     {
@@ -308,146 +308,162 @@ columnsApproval = [
 //planning
 
 $(document).ready(function () {
-    var datatableApproval = document.getElementById("datatable-planning-approval");
-    datatableApproval.columns = columnsApproval;
-    const inputData = $("#data-planning-approval").val();
-    datatableApproval.rows = JSON.parse(inputData);
+    try {
+        var datatableApproval = document.getElementById("datatable-planning-approval");
+        datatableApproval.columns = columnsApproval;
+        const inputData = $("#data-planning-approval").val();
+        datatableApproval.rows = JSON.parse(inputData);
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 // Contractor
 $(document).ready(function () {
-    var datatable = document.getElementById("datatable-contractor"),
-        datatableApproval = document.getElementById("datatable-contractor-approval");
+    try {
+        var datatable = document.getElementById("datatable-contractor"),
+            datatableApproval = document.getElementById("datatable-contractor-approval");
 
-    const columns = [
-        {
-            key: "stt",
-            text: "STT",
-            position: 1
-        },
-        {
-            key: "contrator",
-            text: "Nhà thầu",
-            position: 2
-        },
-        {
-            key: "price",
-            text: "Báo giá",
-            position: 3,
-            formatData: (data) => {
-                return formatNumber(data);
+        const columns = [
+            {
+                key: "stt",
+                text: "STT",
+                position: 1
+            },
+            {
+                key: "contrator",
+                text: "Nhà thầu",
+                position: 2
+            },
+            {
+                key: "price",
+                text: "Báo giá",
+                position: 3,
+                formatData: (data) => {
+                    return formatNumber(data);
+                }
+            },
+            {
+                key: "notes",
+                text: "Ghi chú",
+                position: 4
             }
-        },
-        {
-            key: "notes",
-            text: "Ghi chú",
-            position: 4
-        }
-    ];
+        ];
 
-    datatable.columns = columns;
-    const inputData = $("#data-contractor").val();
-    datatable.rows = JSON.parse(inputData);
+        datatable.columns = columns;
+        const inputData = $("#data-contractor").val();
+        datatable.rows = JSON.parse(inputData);
 
-    datatableApproval.columns = columnsApproval;
-    const inputDataA = $("#data-contractor-approval").val();
-    datatableApproval.rows = JSON.parse(inputDataA);
+        datatableApproval.columns = columnsApproval;
+        const inputDataA = $("#data-contractor-approval").val();
+        datatableApproval.rows = JSON.parse(inputDataA);
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 // implement
 $(document).ready(function () {
-    var datatable = document.getElementById("datatable-implement");
+    try {
+        var datatable = document.getElementById("datatable-implement");
 
-    const columns = [
-        {
-            key: "stt",
-            text: "STT",
-            position: 1
-        },
-        {
-            key: "category",
-            text: "Hạng mục",
-            position: 2
-        },
-        {
-            key: "start",
-            text: "Bắt đầu",
-            position: 3,
-            formatData: (ISOString) => {
-                return formatDate(ISOString);
+        const columns = [
+            {
+                key: "stt",
+                text: "STT",
+                position: 1
+            },
+            {
+                key: "category",
+                text: "Hạng mục",
+                position: 2
+            },
+            {
+                key: "start",
+                text: "Bắt đầu",
+                position: 3,
+                formatData: (ISOString) => {
+                    return formatDate(ISOString);
+                }
+            },
+            {
+                key: "end",
+                text: "Kết thúc",
+                position: 4,
+                formatData: (ISOString) => {
+                    return formatDate(ISOString);
+                }
+            },
+            {
+                key: "status",
+                text: "Trạng thái",
+                position: 5
+            },
+            {
+                key: "notes",
+                text: "Ghi chú",
+                position: 6
             }
-        },
-        {
-            key: "end",
-            text: "Kết thúc",
-            position: 4,
-            formatData: (ISOString) => {
-                return formatDate(ISOString);
-            }
-        },
-        {
-            key: "status",
-            text: "Trạng thái",
-            position: 5
-        },
-        {
-            key: "notes",
-            text: "Ghi chú",
-            position: 6
-        }
-    ];
+        ];
 
-    datatable.columns = columns;
-    const inputData = $("#data-implement").val();
-    datatable.rows = JSON.parse(inputData);
+        datatable.columns = columns;
+        const inputData = $("#data-implement").val();
+        datatable.rows = JSON.parse(inputData);
+    } catch (error) {
+        console.error(error);
+    }
 });
 
-// payment
+// checkout
 $(document).ready(function () {
-    var datatable = document.getElementById("datatable-payment");
+    try {
+        var datatable = document.getElementById("datatable-checkout");
 
-    const columns = [
-        {
-            key: "stt",
-            text: "STT",
-            position: 1
-        },
-        {
-            key: "category",
-            text: "Hạng mục",
-            position: 2
-        },
-        {
-            key: "date",
-            text: "Thời gian",
-            position: 3,
-            formatData: (ISOString) => {
-                return formatDate(ISOString);
+        const columns = [
+            {
+                key: "stt",
+                text: "STT",
+                position: 1
+            },
+            {
+                key: "category",
+                text: "Hạng mục",
+                position: 2
+            },
+            {
+                key: "date",
+                text: "Thời gian",
+                position: 3,
+                formatData: (ISOString) => {
+                    return formatDate(ISOString);
+                }
+            },
+            {
+                key: "price",
+                text: "Giá trị",
+                position: 4,
+                formatData: (data) => {
+                    return formatNumber(data);
+                }
+            },
+            {
+                key: "status",
+                text: "Trạng thái",
+                position: 5
+            },
+            {
+                key: "notes",
+                text: "Ghi chú",
+                position: 6
             }
-        },
-        {
-            key: "price",
-            text: "Giá trị",
-            position: 4,
-            formatData: (data) => {
-                return formatNumber(data);
-            }
-        },
-        {
-            key: "status",
-            text: "Trạng thái",
-            position: 5
-        },
-        {
-            key: "notes",
-            text: "Ghi chú",
-            position: 6
-        }
-    ];
+        ];
 
-    datatable.columns = columns;
-    const inputData = $("#data-payment").val();
-    datatable.rows = JSON.parse(inputData);
+        datatable.columns = columns;
+        const inputData = $("#data-checkout").val();
+        datatable.rows = JSON.parse(inputData);
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 function convertViToEn(str, toUpperCase = false) {
