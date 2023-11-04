@@ -299,12 +299,13 @@ columnsApproval = [
         position: 6
     }
 ];
-
 //planning
 
 $(document).ready(function () {
     var datatableApproval = document.getElementById("datatable-planning-approval");
     datatableApproval.columns = columnsApproval;
+    const inputData = $("data-planning-approval").val();
+    datatableApproval.rows = JSON.parse(inputData);
 });
 
 // Contractor
@@ -336,7 +337,96 @@ $(document).ready(function () {
     ];
 
     datatable.columns = columns;
+    const inputData = $("data-contractor").val();
+    datatable.rows = JSON.parse(inputData);
+
     datatableApproval.columns = columnsApproval;
+    const inputDataA = $("data-contractor-approval").val();
+    datatableApproval.rows = JSON.parse(inputDataA);
+});
+
+// implement
+$(document).ready(function () {
+    var datatable = document.getElementById("datatable-implement");
+
+    const columns = [
+        {
+            key: "stt",
+            text: "STT",
+            position: 1
+        },
+        {
+            key: "category",
+            text: "Hạng mục",
+            position: 2
+        },
+        {
+            key: "start",
+            text: "Bắt đầu",
+            position: 3
+        },
+        {
+            key: "end",
+            text: "Kết thúc",
+            position: 4
+        },
+        {
+            key: "status",
+            text: "Trạng thái",
+            position: 5
+        },
+        {
+            key: "notes",
+            text: "Ghi chú",
+            position: 6
+        }
+    ];
+
+    datatable.columns = columns;
+    const inputData = $("data-implement").val();
+    datatable.rows = JSON.parse(inputData);
+});
+
+// payment
+$(document).ready(function () {
+    var datatable = document.getElementById("datatable-payment");
+
+    const columns = [
+        {
+            key: "stt",
+            text: "STT",
+            position: 1
+        },
+        {
+            key: "category",
+            text: "Hạng mục",
+            position: 2
+        },
+        {
+            key: "date",
+            text: "Thời gian",
+            position: 3
+        },
+        {
+            key: "price",
+            text: "Giá trị",
+            position: 4
+        },
+        {
+            key: "status",
+            text: "Trạng thái",
+            position: 5
+        },
+        {
+            key: "notes",
+            text: "Ghi chú",
+            position: 6
+        }
+    ];
+
+    datatable.columns = columns;
+    const inputData = $("data-payment").val();
+    datatable.rows = JSON.parse(inputData);
 });
 
 function convertViToEn(str, toUpperCase = false) {

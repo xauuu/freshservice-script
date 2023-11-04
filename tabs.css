@@ -250,3 +250,7 @@
     font-weight: 600;
     margin-bottom: 10px;
 }
+
+.muted {
+    color: #647a8e;
+}
