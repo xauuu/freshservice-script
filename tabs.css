@@ -68,6 +68,7 @@
     position: relative;
     float: left;
     margin-right: -5px;
+    line-height: 20px;
 }
 
 #chevron-container ul.chevron-list li div {
@@ -194,6 +195,7 @@
     height: 100%;
     background: linear-gradient(90deg, rgba(235, 238, 240, 0) 0%, #dfe5ea 100%);
     z-index: 1;
+    line-height: 20px;
 }
 
 #chevron-container .chevron-controls#chevron_control_right {
