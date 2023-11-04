@@ -281,12 +281,18 @@ columnsApproval = [
     {
         key: "sent-date",
         text: "Ngày gửi",
-        position: 3
+        position: 3,
+        formatData: (ISOString) => {
+            return formatDate(ISOString);
+        }
     },
     {
         key: "approval-date",
         text: "Ngày duyệt",
-        position: 4
+        position: 4,
+        formatData: (ISOString) => {
+            return formatDate(ISOString);
+        }
     },
     {
         key: "status",
@@ -327,7 +333,10 @@ $(document).ready(function () {
         {
             key: "price",
             text: "Báo giá",
-            position: 3
+            position: 3,
+            formatData: (data) => {
+                return formatNumber(data);
+            }
         },
         {
             key: "notes",
@@ -363,12 +372,18 @@ $(document).ready(function () {
         {
             key: "start",
             text: "Bắt đầu",
-            position: 3
+            position: 3,
+            formatData: (ISOString) => {
+                return formatDate(ISOString);
+            }
         },
         {
             key: "end",
             text: "Kết thúc",
-            position: 4
+            position: 4,
+            formatData: (ISOString) => {
+                return formatDate(ISOString);
+            }
         },
         {
             key: "status",
@@ -405,12 +420,18 @@ $(document).ready(function () {
         {
             key: "date",
             text: "Thời gian",
-            position: 3
+            position: 3,
+            formatData: (ISOString) => {
+                return formatDate(ISOString);
+            }
         },
         {
             key: "price",
             text: "Giá trị",
-            position: 4
+            position: 4,
+            formatData: (data) => {
+                return formatNumber(data);
+            }
         },
         {
             key: "status",
@@ -442,4 +463,21 @@ function convertViToEn(str, toUpperCase = false) {
     str = str.replace(/\u02C6|\u0306|\u031B/g, "");
 
     return toUpperCase ? str.toUpperCase() : str;
+}
+
+function formatDate(date) {
+    const today = new Date(date);
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1;
+    let dd = today.getDate();
+
+    if (dd < 10) dd = "0" + dd;
+    if (mm < 10) mm = "0" + mm;
+
+    const formattedToday = dd + "/" + mm + "/" + yyyy;
+    return formattedToday;
+}
+
+function formatNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
