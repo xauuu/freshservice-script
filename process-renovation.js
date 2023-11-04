@@ -304,7 +304,7 @@ columnsApproval = [
 $(document).ready(function () {
     var datatableApproval = document.getElementById("datatable-planning-approval");
     datatableApproval.columns = columnsApproval;
-    const inputData = $("data-planning-approval").val();
+    const inputData = $("#data-planning-approval").val();
     datatableApproval.rows = JSON.parse(inputData);
 });
 
@@ -337,11 +337,11 @@ $(document).ready(function () {
     ];
 
     datatable.columns = columns;
-    const inputData = $("data-contractor").val();
+    const inputData = $("#data-contractor").val();
     datatable.rows = JSON.parse(inputData);
 
     datatableApproval.columns = columnsApproval;
-    const inputDataA = $("data-contractor-approval").val();
+    const inputDataA = $("#data-contractor-approval").val();
     datatableApproval.rows = JSON.parse(inputDataA);
 });
 
@@ -383,7 +383,7 @@ $(document).ready(function () {
     ];
 
     datatable.columns = columns;
-    const inputData = $("data-implement").val();
+    const inputData = $("#data-implement").val();
     datatable.rows = JSON.parse(inputData);
 });
 
@@ -425,7 +425,7 @@ $(document).ready(function () {
     ];
 
     datatable.columns = columns;
-    const inputData = $("data-payment").val();
+    const inputData = $("#data-payment").val();
     datatable.rows = JSON.parse(inputData);
 });
 
