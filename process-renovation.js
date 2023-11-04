@@ -267,6 +267,78 @@ $(document).ready(function () {
     }
 });
 
+columnsApproval = [
+    {
+        key: "stt",
+        text: "STT",
+        position: 1
+    },
+    {
+        key: "approver",
+        text: "Người duyệt",
+        position: 2
+    },
+    {
+        key: "sent-date",
+        text: "Ngày gửi",
+        position: 3
+    },
+    {
+        key: "approval-date",
+        text: "Ngày duyệt",
+        position: 4
+    },
+    {
+        key: "status",
+        text: "Trạng thái",
+        position: 5
+    },
+    {
+        key: "notes",
+        text: "Ý kiến",
+        position: 6
+    }
+];
+
+//planning
+
+$(document).ready(function () {
+    var datatableApproval = document.getElementById("datatable-planning-approval");
+    datatableApproval.columns = columnsApproval;
+});
+
+// Contractor
+$(document).ready(function () {
+    var datatable = document.getElementById("datatable-contractor"),
+        datatableApproval = document.getElementById("datatable-contractor-approval");
+
+    const columns = [
+        {
+            key: "stt",
+            text: "STT",
+            position: 1
+        },
+        {
+            key: "contrator",
+            text: "Nhà thầu",
+            position: 2
+        },
+        {
+            key: "price",
+            text: "Báo giá",
+            position: 3
+        },
+        {
+            key: "notes",
+            text: "Ghi chú",
+            position: 4
+        }
+    ];
+
+    datatable.columns = columns;
+    datatableApproval.columns = columnsApproval;
+});
+
 function convertViToEn(str, toUpperCase = false) {
     str = str.toLowerCase();
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
