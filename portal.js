@@ -1,6 +1,6 @@
 function renderHome() {
-    const lang = $("#portal-script").data("language");
-    const workspace_id = $("#portal-script").data("workspace_id");
+    var lang = $("#portal-script").data("language");
+    var workspace_id = $("#portal-script").data("workspace_id");
 
     var modal = $(".modal-container");
     var close = $(".close");
@@ -11,7 +11,7 @@ function renderHome() {
     $(document).ready(function () {
         var appList = [];
         var processList = [];
-        -document.getElementById("sr-search").addEventListener("input", (e) => {
+        document.getElementById("sr-search").addEventListener("input", (e) => {
             const activeApp = $("input[name=app_code]").val();
             const keyword = e.currentTarget.value.toLowerCase();
             if (!keyword) {
