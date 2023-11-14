@@ -212,7 +212,7 @@
     position: relative;
     width: 438px;
     max-width: 100%;
-    margin-top: 40px;
+    margin: 40px 0 0 0;
 }
 .custom-portal main .banner #search-form svg.search-icon {
     position: absolute;
