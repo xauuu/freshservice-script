@@ -3,6 +3,7 @@
     font-family: "Inter", sans-serif !important;
     color: var(--text-color);
     position: relative;
+    background-color: white;
 }
 .custom-portal[site="retail"] {
     --primary-color: #2579ff;
@@ -12,13 +13,19 @@
     --text-color: #31373f;
     --card-bg-color: #292e69;
 }
-.custom-portal[site="retail"] i.ficon-notifications {
-    height: 37px;
-    color: var(--text-color);
+.custom-portal i.ficon-notifications {
+    height: 37px !important;
+    color: var(--text-color) !important;
 }
-.custom-portal[site="retail"] i.ficon-notifications:hover {
-    background-color: var(--bg-color);
-    color: white;
+.custom-portal i.ficon-notifications:hover {
+    background-color: var(--bg-color) !important;
+    color: white !important;
+}
+.custom-portal header #menu-icon img.menu-white {
+    display: none !important;
+}
+.custom-portal header #menu-icon img.menu-icon {
+    display: block !important;
 }
 .custom-portal h1,
 .custom-portal h2,
@@ -56,8 +63,8 @@
     display: block;
 }
 .custom-portal .padding-lr {
-    padding-left: 123px;
-    padding-right: 123px;
+    padding-left: 123px !important;
+    padding-right: 123px !important;
 }
 .custom-portal .max-line-2 {
     overflow: hidden;
@@ -299,6 +306,9 @@
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
+}
+.custom-portal footer .footer-container .logo-footer {
+    height: 64px;
 }
 .custom-portal footer .footer-container .col-1 {
     flex: 0 0 30%;
@@ -559,8 +569,8 @@
         display: none !important;
     }
     .custom-container .padding-lr {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
     .custom-container header {
         width: -webkit-fill-available;
