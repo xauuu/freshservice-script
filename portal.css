@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
-.custom-container {
-    font-family: "Inter", sans-serif;
+.custom-portal {
+    font-family: "Inter", sans-serif !important;
     color: var(--text-color);
     position: relative;
 }
-.custom-container[site="retail"] {
+.custom-portal[site="retail"] {
     --primary-color: #2579ff;
     --secondary-color: #9ea7b1;
     --footer-color: #12174e;
@@ -12,60 +12,68 @@
     --text-color: #31373f;
     --card-bg-color: #292e69;
 }
-.custom-container h1,
-.custom-container h2,
-.custom-container h3,
-.custom-container h4,
-.custom-container h5,
-.custom-container h6,
-.custom-container hr,
-.custom-container p {
+.custom-portal[site="retail"] i.ficon-notifications {
+    height: 37px;
+    color: var(--text-color);
+}
+.custom-portal[site="retail"] i.ficon-notifications:hover {
+    background-color: var(--bg-color);
+    color: white;
+}
+.custom-portal h1,
+.custom-portal h2,
+.custom-portal h3,
+.custom-portal h4,
+.custom-portal h5,
+.custom-portal h6,
+.custom-portal hr,
+.custom-portal p {
     font-family: "Poppins", sans-serif;
     margin: 0;
 }
-.custom-container ol,
-.custom-container ul {
+.custom-portal ol,
+.custom-portal ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-.custom-container ol li,
-.custom-container ul li {
+.custom-portal ol li,
+.custom-portal ul li {
     margin: 0;
 }
-.custom-container a {
+.custom-portal a {
     text-decoration: none;
     color: var(--text-color);
 }
-.custom-container img {
+.custom-portal img {
     max-width: 100%;
     height: auto;
 }
-.custom-container .show-on-mobile {
+.custom-portal .show-on-mobile {
     display: none;
 }
-.custom-container .hide-on-mobile {
+.custom-portal .hide-on-mobile {
     display: block;
 }
-.custom-container .padding-lr {
+.custom-portal .padding-lr {
     padding-left: 123px;
     padding-right: 123px;
 }
-.custom-container .max-line-2 {
+.custom-portal .max-line-2 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
 }
-.custom-container .text-center {
+.custom-portal .text-center {
     text-align: center;
 }
-.custom-container .w-1440 {
+.custom-portal .w-1440 {
     max-width: 1440px;
     margin: 0 auto;
 }
-.custom-container header {
+.custom-portal header {
     background-color: white;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -74,41 +82,41 @@
     align-items: center;
     z-index: 2;
 }
-.custom-container header .logo img {
+.custom-portal header .logo img {
     height: 32px;
 }
-.custom-container header input {
+.custom-portal header input {
     display: none;
 }
-.custom-container header .nav {
+.custom-portal header .nav {
     display: flex;
     align-items: center;
 }
-.custom-container header .nav__list {
+.custom-portal header .nav__list {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 2rem;
     padding: 0;
 }
-.custom-container header .nav__link {
+.custom-portal header .nav__link {
     color: var(--secondary-color);
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
 }
-.custom-container header .nav__link.active,
-.custom-container header .nav__link:hover {
+.custom-portal header .nav__link.active,
+.custom-portal header .nav__link:hover {
     font-weight: 600;
     color: var(--primary-color);
     border-bottom: solid 2px var(--primary-color);
 }
-.custom-container header .nav__bar-btn {
+.custom-portal header .nav__bar-btn {
     display: none;
     cursor: pointer;
 }
-.custom-container header .nav__overlay {
+.custom-portal header .nav__overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -117,7 +125,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     display: none;
 }
-.custom-container header .nav__mobile {
+.custom-portal header .nav__mobile {
     z-index: 12;
     position: fixed;
     top: 0;
@@ -129,25 +137,25 @@
     transform: translateX(100%);
     transition: all 0.4s ease-in-out;
 }
-.custom-container header .nav__mobile-list {
+.custom-portal header .nav__mobile-list {
     margin-top: 50px;
 }
-.custom-container header .nav__mobile-list li:not(:first-child) {
+.custom-portal header .nav__mobile-list li:not(:first-child) {
     margin-top: 40px;
 }
-.custom-container header .nav__mobile-list a.active {
+.custom-portal header .nav__mobile-list a.active {
     color: #2579ff;
     font-weight: 600;
     border-bottom: solid 2px #2579ff;
 }
-.custom-container header .nav__mobile-link {
+.custom-portal header .nav__mobile-link {
     color: var(--text-color);
     font-size: 15px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
 }
-.custom-container header .nav__mobile-btn {
+.custom-portal header .nav__mobile-btn {
     display: flex;
     align-items: center;
     color: var(--text-color);
@@ -155,58 +163,58 @@
     font-size: 15px;
     cursor: pointer;
 }
-.custom-container header .nav__mobile .login-section {
+.custom-portal header .nav__mobile .login-section {
     margin-top: 50px;
 }
-.custom-container header .nav__input:checked ~ .nav__mobile {
+.custom-portal header .nav__input:checked ~ .nav__mobile {
     transform: translateX(0);
 }
-.custom-container header .nav__input:checked ~ .nav__overlay {
+.custom-portal header .nav__input:checked ~ .nav__overlay {
     display: block;
 }
-.custom-container header .btn-login {
+.custom-portal header .btn-login {
     padding: 8px 16px;
     background-color: var(--primary-color);
     color: white;
     border-radius: 6px;
     font-size: 14px;
 }
-.custom-container header .user {
+.custom-portal header .user {
     display: flex;
 }
-.custom-container header .username {
+.custom-portal header .username {
     color: #fff;
     font-size: 13px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
 }
-.custom-container main .banner {
+.custom-portal main .banner {
     background: center no-repeat;
     background-size: cover;
     padding-top: 140px;
     padding-bottom: 140px;
 }
-.custom-container main .banner h4 {
+.custom-portal main .banner h4 {
     font-size: 28px;
     font-weight: 600;
 }
-.custom-container main .banner h4:not(:first-child) {
+.custom-portal main .banner h4:not(:first-child) {
     margin-top: 12px;
 }
-.custom-container main .banner #search-form {
+.custom-portal main .banner #search-form {
     position: relative;
     width: 438px;
     max-width: 100%;
     margin-top: 40px;
 }
-.custom-container main .banner #search-form svg.search-icon {
+.custom-portal main .banner #search-form svg.search-icon {
     position: absolute;
     top: 50%;
     left: 12px;
     transform: translateY(-50%);
 }
-.custom-container main .banner #search-form input {
+.custom-portal main .banner #search-form input {
     border-radius: 8px;
     box-shadow: 0px 1px 4px 0px rgba(208, 208, 208, 0.25);
     width: 100%;
@@ -218,20 +226,20 @@
     font-weight: 400;
     font-family: "Poppins", sans-serif;
 }
-.custom-container main .banner #search-form input::-moz-placeholder {
+.custom-portal main .banner #search-form input::-moz-placeholder {
     color: var(--secondary-color);
 }
-.custom-container main .banner #search-form input::placeholder {
+.custom-portal main .banner #search-form input::placeholder {
     color: var(--secondary-color);
 }
-.custom-container main .banner .solutions {
+.custom-portal main .banner .solutions {
     max-width: 750px;
     margin-top: 20px;
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
 }
-.custom-container main .banner .solutions a {
+.custom-portal main .banner .solutions a {
     border-radius: 4px;
     color: #fff;
     font-size: 14px;
@@ -239,7 +247,7 @@
     padding: 8px 21px;
     background-color: var(--card-bg-color);
 }
-.custom-container main .service-catalogs {
+.custom-portal main .service-catalogs {
     padding-top: 80px;
     padding-bottom: 80px;
     display: flex;
@@ -249,7 +257,7 @@
     align-items: center;
     background-color: var(--bg-color);
 }
-.custom-container main .service-catalogs .item {
+.custom-portal main .service-catalogs .item {
     display: flex;
     gap: 12px;
     width: 338px;
@@ -258,7 +266,7 @@
     border-radius: 8px;
     cursor: pointer;
 }
-.custom-container main .service-catalogs .item .icon {
+.custom-portal main .service-catalogs .item .icon {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -267,72 +275,72 @@
     align-items: center;
     justify-content: center;
 }
-.custom-container main .service-catalogs .item .content {
+.custom-portal main .service-catalogs .item .content {
     flex: 1;
 }
-.custom-container main .service-catalogs .item .content .name {
+.custom-portal main .service-catalogs .item .content .name {
     color: var(--text-color);
     font-size: 20px;
     font-weight: 600;
 }
-.custom-container main .service-catalogs .item .content .description {
+.custom-portal main .service-catalogs .item .content .description {
     color: var(--secondary-color);
     font-size: 14px;
     font-weight: 400;
     margin-top: 8px;
 }
-.custom-container footer {
+.custom-portal footer {
     padding: 76px 112px 25px;
     background: #12174e;
 }
-.custom-container footer .footer-container {
+.custom-portal footer .footer-container {
     max-width: 1440px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
 }
-.custom-container footer .footer-container .col-1 {
+.custom-portal footer .footer-container .col-1 {
     flex: 0 0 30%;
 }
-.custom-container footer .footer-container .col-2 {
+.custom-portal footer .footer-container .col-2 {
     flex: 0 0 20%;
 }
-.custom-container footer .footer-container .logo-footer {
+.custom-portal footer .footer-container .logo-footer {
     width: 200px;
 }
-.custom-container footer .footer-container h6 {
+.custom-portal footer .footer-container h6 {
     color: #a6a9cd;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
-.custom-container footer .footer-container h4 {
+.custom-portal footer .footer-container h4 {
     color: #fff;
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
 }
-.custom-container footer .footer-container ul {
+.custom-portal footer .footer-container ul {
     margin-top: 16px;
 }
-.custom-container footer .footer-container ul li {
+.custom-portal footer .footer-container ul li {
     display: flex;
     gap: 4px;
     align-items: center;
 }
-.custom-container footer .footer-container ul li a {
+.custom-portal footer .footer-container ul li a {
     color: #a6a9cd;
 }
-.custom-container footer .footer-container ul li a:hover {
+.custom-portal footer .footer-container ul li a:hover {
     color: #fff;
 }
-.custom-container footer .footer-container ul li:not(:first-child) {
+.custom-portal footer .footer-container ul li:not(:first-child) {
     margin-top: 12px;
 }
-.custom-container footer .ft-copyright {
+.custom-portal footer .ft-copyright {
     margin-top: 50px;
     color: #a6a9cd;
     font-size: 14px;
@@ -340,15 +348,15 @@
     font-weight: 400;
     line-height: 125%;
 }
-.custom-container footer .ft-copyright .copyright {
+.custom-portal footer .ft-copyright .copyright {
     display: inline-block;
     vertical-align: middle;
     margin: 0 2px;
 }
-.custom-container footer .ft-copyright .login-privacy {
+.custom-portal footer .ft-copyright .login-privacy {
     display: none;
 }
-.custom-container .modal-container {
+.custom-portal .modal-container {
     display: none;
     position: fixed;
     top: 0;
@@ -364,13 +372,13 @@
     background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
 }
-.custom-container .modal-container::before {
+.custom-portal .modal-container::before {
     content: "";
     display: inline-block;
     height: 100%;
     vertical-align: middle;
 }
-.custom-container .modal-container .modal {
+.custom-portal .modal-container .modal {
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -385,7 +393,7 @@
     box-shadow: 0 0 10px #000;
     text-align: left;
 }
-.custom-container .modal-container .modal .modal-header {
+.custom-portal .modal-container .modal .modal-header {
     padding: 20px 35px;
     display: flex;
     align-items: center;
@@ -394,37 +402,37 @@
     gap: 20px;
     position: relative;
 }
-.custom-container .modal-container .modal .modal-header .title {
+.custom-portal .modal-container .modal .modal-header .title {
     color: var(--text-color);
     font-size: 20px;
     font-weight: 600;
 }
-.custom-container .modal-container .modal .modal-header .search-form {
+.custom-portal .modal-container .modal .modal-header .search-form {
     position: relative;
     width: 240px;
     color: var(--secondary-color);
 }
-.custom-container .modal-container .modal .modal-header .search-form input {
+.custom-portal .modal-container .modal .modal-header .search-form input {
     border-radius: 4px;
     border: 1px solid #a9b1bb;
     background: #fff;
     padding: 10px 40px 10px 16px;
     width: 100%;
 }
-.custom-container .modal-container .modal .modal-header .search-form input::-moz-placeholder {
+.custom-portal .modal-container .modal .modal-header .search-form input::-moz-placeholder {
     color: var(--secondary-color);
 }
-.custom-container .modal-container .modal .modal-header .search-form input::placeholder {
+.custom-portal .modal-container .modal .modal-header .search-form input::placeholder {
     color: var(--secondary-color);
 }
-.custom-container .modal-container .modal .modal-header .search-form .icon {
+.custom-portal .modal-container .modal .modal-header .search-form .icon {
     position: absolute;
     right: 14px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
 }
-.custom-container .modal-container .modal .modal-header .btn-close {
+.custom-portal .modal-container .modal .modal-header .btn-close {
     width: 72px;
     margin-left: auto;
     padding: 12px;
@@ -437,15 +445,15 @@
     font-weight: 500;
     line-height: 100%; /* 14px */
 }
-.custom-container .modal-container .modal .modal-header .icon-close {
+.custom-portal .modal-container .modal .modal-header .icon-close {
     position: absolute;
     top: 24px;
     right: 20px;
 }
-.custom-container .modal-container .modal .modal-content {
+.custom-portal .modal-container .modal .modal-content {
     padding: 36px;
 }
-.custom-container .modal-container .modal .modal-content .service-items {
+.custom-portal .modal-container .modal .modal-content .service-items {
     display: flex;
     flex-wrap: wrap;
     -moz-column-gap: 50px;
@@ -454,7 +462,7 @@
     justify-content: center;
     align-items: center;
 }
-.custom-container .modal-container .modal .modal-content .service-items .item {
+.custom-portal .modal-container .modal .modal-content .service-items .item {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -462,7 +470,7 @@
     border-radius: 8px;
     cursor: pointer;
 }
-.custom-container .modal-container .modal .modal-content .service-items .item .icon {
+.custom-portal .modal-container .modal .modal-content .service-items .item .icon {
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -471,35 +479,35 @@
     align-items: center;
     justify-content: center;
 }
-.custom-container .modal-container .modal .modal-content .service-items .item .icon svg {
+.custom-portal .modal-container .modal .modal-content .service-items .item .icon svg {
     width: 28px;
     height: 28px;
 }
-.custom-container .modal-container .modal .modal-content .service-items .item .content {
+.custom-portal .modal-container .modal .modal-content .service-items .item .content {
     flex: 1;
 }
-.custom-container .modal-container .modal .modal-content .service-items .item .content .name {
+.custom-portal .modal-container .modal .modal-content .service-items .item .content .name {
     color: var(--text-color);
     font-size: 20px;
     font-weight: 600;
 }
-.custom-container .modal-container .modal .modal-content .service-items .item .content .description {
+.custom-portal .modal-container .modal .modal-content .service-items .item .content .description {
     color: var(--secondary-color);
     font-size: 14px;
     font-weight: 400;
     margin-top: 8px;
 }
-.custom-container .modal-container .modal .modal-content #pagination {
+.custom-portal .modal-container .modal .modal-content #pagination {
     margin-top: 60px;
     display: flex;
     justify-content: center;
 }
-.custom-container .modal-container .modal .modal-content #pagination ul {
+.custom-portal .modal-container .modal .modal-content #pagination ul {
     display: inline-block;
     padding: 0;
     margin: 0;
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li {
+.custom-portal .modal-container .modal .modal-content #pagination ul li {
     cursor: pointer;
     display: inline;
     color: black;
@@ -513,33 +521,33 @@
     border: solid 1px #eee;
     font-size: 13px;
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li a {
+.custom-portal .modal-container .modal .modal-content #pagination ul li a {
     color: var(--secondary-color);
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li.active {
+.custom-portal .modal-container .modal .modal-content #pagination ul li.active {
     border-color: var(--primary-color);
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li.active a {
+.custom-portal .modal-container .modal .modal-content #pagination ul li.active a {
     color: var(--primary-color);
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li:hover:not(.active):not(.disabled) {
+.custom-portal .modal-container .modal .modal-content #pagination ul li:hover:not(.active):not(.disabled) {
     background-color: var(--secondary-color);
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li:hover:not(.active):not(.disabled) a {
+.custom-portal .modal-container .modal .modal-content #pagination ul li:hover:not(.active):not(.disabled) a {
     color: #fff;
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li.paginationjs-next:not(.disabled),
-.custom-container .modal-container .modal .modal-content #pagination ul li.paginationjs-prev:not(.disabled) {
+.custom-portal .modal-container .modal .modal-content #pagination ul li.paginationjs-next:not(.disabled),
+.custom-portal .modal-container .modal .modal-content #pagination ul li.paginationjs-prev:not(.disabled) {
     border-color: var(--text-color);
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li.paginationjs-next:not(.disabled) a,
-.custom-container .modal-container .modal .modal-content #pagination ul li.paginationjs-prev:not(.disabled) a {
+.custom-portal .modal-container .modal .modal-content #pagination ul li.paginationjs-next:not(.disabled) a,
+.custom-portal .modal-container .modal .modal-content #pagination ul li.paginationjs-prev:not(.disabled) a {
     color: var(--text-color);
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li.disabled a {
+.custom-portal .modal-container .modal .modal-content #pagination ul li.disabled a {
     color: var(--secondary-color);
 }
-.custom-container .modal-container .modal .modal-content #pagination ul li:not(:first-child) {
+.custom-portal .modal-container .modal .modal-content #pagination ul li:not(:first-child) {
     margin-left: 10px;
 }
 
