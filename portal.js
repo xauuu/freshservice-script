@@ -1,4 +1,7 @@
-function renderHome(lang) {
+function renderHome() {
+    const lang = $("#portal-script").data("language");
+    const workspace_id = $("#portal-script").data("workspace_id");
+
     var modal = $(".modal-container");
     var close = $(".close");
     close.click(function () {
@@ -6,12 +9,9 @@ function renderHome(lang) {
     });
 
     $(document).ready(function () {
-        const appContainer = jQuery(".service-catalogs");
         var appList = [];
         var processList = [];
-        const url = `https://trusisor.freshservice.com/api/v2/objects/27000052210/records?query=language%20%3A%20%27${lang}%27%20AND%20is_active%20%3A%20%271%27`;
-
-        document.getElementById("sr-search").addEventListener("input", (e) => {
+        -document.getElementById("sr-search").addEventListener("input", (e) => {
             const activeApp = $("input[name=app_code]").val();
             const keyword = e.currentTarget.value.toLowerCase();
             if (!keyword) {
@@ -30,7 +30,7 @@ function renderHome(lang) {
 
         jQuery.ajax({
             type: "GET",
-            url: url,
+            url: `api/v2/objects/27000052210/records?query=language%20%3A%20%27${lang}%27%20AND%20is_active%20%3A%20%271%27`,
             dataType: "json",
             headers: authHeader,
             success: function (response) {
@@ -58,7 +58,6 @@ function renderHome(lang) {
         }
 
         function renderApp(list) {
-            const title = lang == "vi" ? "Tất cả các mục dịch vụ" : "All Service Items";
             let html = "";
             jQuery.map(list, function (item, index) {
                 const { app_name, app_code, app_image } = item;
@@ -84,7 +83,8 @@ function renderHome(lang) {
                                 </div>
                             </div>`;
             });
-            appContainer.html(html);
+
+            jQuery(".service-catalogs").html(html);
             $(".service-catalogs .item").click(function (e) {
                 e.preventDefault();
                 modal.show();
@@ -95,6 +95,7 @@ function renderHome(lang) {
                 renderProcess(newPList);
             });
         }
+
         function renderProcess(list) {
             $("#pagination-item").pagination({
                 dataSource: list,
@@ -120,11 +121,9 @@ function renderHome(lang) {
     });
 
     $(document).ready(function () {
-        const solutions = jQuery(".solutions");
-        const url = "https://trusisor.freshservice.com/api/v2/solutions/categories";
         jQuery.ajax({
             type: "GET",
-            url: url,
+            url: `/api/v2/solutions/categories?workspace_id=${workspace_id}`,
             dataType: "json",
             headers: authHeader,
             success: function (response) {
@@ -138,7 +137,7 @@ function renderHome(lang) {
                 const { id, name } = item;
                 html += `<a href="/support/solutions/${id}">${name}</a>`;
             });
-            solutions.html(html);
+            jQuery(".solutions").html(html);
         }
         function renderFooter(list) {
             let html = ``;
@@ -147,9 +146,9 @@ function renderHome(lang) {
                 const { id, name } = item;
                 html += `<li><a href="/solutions/${id}">${name}</a></li>`;
             });
-            $("#services").html(html);
+            jQuery("#services").html(html);
         }
     });
 }
 
-renderHome($("#process-renovation").data("language"));
+renderHome();
