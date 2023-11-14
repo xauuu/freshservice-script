@@ -1,11 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 .custom-portal {
+    --primary-color: #2579ff;
+    --secondary-color: #9ea7b1;
+    --footer-color: #12174e;
+    --bg-color: #f6f8f9;
+    --text-color: #31373f;
+    --card-bg-color: #292e69;
     font-family: "Inter", sans-serif !important;
     color: var(--text-color);
     position: relative;
     background-color: white;
 }
 .custom-portal[site="retail"] {
+    --primary-color: #2579ff;
+    --secondary-color: #9ea7b1;
+    --footer-color: #12174e;
+    --bg-color: #f6f8f9;
+    --text-color: #31373f;
+    --card-bg-color: #292e69;
+}
+.custom-portal[site="healthcare"] {
     --primary-color: #2579ff;
     --secondary-color: #9ea7b1;
     --footer-color: #12174e;
