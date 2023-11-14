@@ -4,7 +4,7 @@
     color: var(--text-color);
     position: relative;
 }
-.custom-container.retail {
+.custom-container[site="retail"] {
     --primary-color: #2579ff;
     --secondary-color: #9ea7b1;
     --footer-color: #12174e;
