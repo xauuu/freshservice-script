@@ -561,56 +561,56 @@
 }
 
 @media (max-width: 768px) {
-    .custom-container .show-on-mobile {
+    .custom-portal .show-on-mobile {
         display: block !important;
     }
-    .custom-container .hide-on-mobile {
+    .custom-portal .hide-on-mobile {
         display: none !important;
     }
-    .custom-container .padding-lr {
+    .custom-portal .padding-lr {
         padding-left: 20px !important;
         padding-right: 20px !important;
     }
-    .custom-container header {
+    .custom-portal header {
         width: -webkit-fill-available;
         position: fixed;
         top: 0;
     }
-    .custom-container header .nav {
+    .custom-portal header .nav {
         margin-left: auto;
     }
-    .custom-container header .login-section {
+    .custom-portal header .login-section {
         margin-left: auto;
     }
-    .custom-container header .nav__bar-btn {
+    .custom-portal header .nav__bar-btn {
         display: flex;
         gap: 10px;
         align-items: center;
         margin-left: 10px;
     }
-    .custom-container header .nav__pc {
+    .custom-portal header .nav__pc {
         display: none;
     }
-    .custom-container header .user {
+    .custom-portal header .user {
         margin-left: auto;
     }
-    .custom-container main {
+    .custom-portal main {
         margin-top: 76px;
     }
-    .custom-container footer {
+    .custom-portal footer {
         padding: 40px 20px 25px;
     }
-    .custom-container footer .footer-container {
+    .custom-portal footer .footer-container {
         flex-direction: column;
         gap: 30px;
     }
-    .custom-container .modal-container .modal .modal-header {
+    .custom-portal .modal-container .modal .modal-header {
         padding: 20px;
     }
-    .custom-container .modal-container .modal .modal-header .search-form {
+    .custom-portal .modal-container .modal .modal-header .search-form {
         width: 160px;
     }
-    .custom-container .modal-container .modal .modal-header .btn-close {
+    .custom-portal .modal-container .modal .modal-header .btn-close {
         width: 72px;
         margin-left: auto;
         padding: 12px;
