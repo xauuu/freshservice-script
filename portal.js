@@ -92,11 +92,11 @@ function renderHome(lang) {
                 const title = jQuery(this).data("title");
                 $("input[name=app_code]").val(appCode);
                 const newPList = processList.filter((item) => item.data.app_code == appCode);
-                renderProcess(processList);
+                renderProcess(newPList);
             });
         }
         function renderProcess(list) {
-            $("#pagination").pagination({
+            $("#pagination-item").pagination({
                 dataSource: list,
                 pageSize: 4,
                 callback: function (data, pagination) {
