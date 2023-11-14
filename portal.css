@@ -506,17 +506,17 @@
     font-weight: 400;
     margin-top: 8px;
 }
-.custom-portal .modal-container .modal .modal-content #pagination {
+.custom-portal .modal-container .modal .modal-content #pagination-item {
     margin-top: 60px;
     display: flex;
     justify-content: center;
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul {
     display: inline-block;
     padding: 0;
     margin: 0;
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li {
     cursor: pointer;
     display: inline;
     color: black;
@@ -530,33 +530,33 @@
     border: solid 1px #eee;
     font-size: 13px;
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li a {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li a {
     color: var(--secondary-color);
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li.active {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li.active {
     border-color: var(--primary-color);
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li.active a {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li.active a {
     color: var(--primary-color);
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li:hover:not(.active):not(.disabled) {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li:hover:not(.active):not(.disabled) {
     background-color: var(--secondary-color);
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li:hover:not(.active):not(.disabled) a {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li:hover:not(.active):not(.disabled) a {
     color: #fff;
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li.paginationjs-next:not(.disabled),
-.custom-portal .modal-container .modal .modal-content #pagination ul li.paginationjs-prev:not(.disabled) {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li.paginationjs-next:not(.disabled),
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li.paginationjs-prev:not(.disabled) {
     border-color: var(--text-color);
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li.paginationjs-next:not(.disabled) a,
-.custom-portal .modal-container .modal .modal-content #pagination ul li.paginationjs-prev:not(.disabled) a {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li.paginationjs-next:not(.disabled) a,
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li.paginationjs-prev:not(.disabled) a {
     color: var(--text-color);
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li.disabled a {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li.disabled a {
     color: var(--secondary-color);
 }
-.custom-portal .modal-container .modal .modal-content #pagination ul li:not(:first-child) {
+.custom-portal .modal-container .modal .modal-content #pagination-item ul li:not(:first-child) {
     margin-left: 10px;
 }
 
@@ -623,7 +623,7 @@
         font-weight: 500;
         line-height: 100%; /* 14px */
     }
-    #pagination {
+    #pagination-item {
         position: inherit;
     }
 } /*# sourceMappingURL=style.css.map */
