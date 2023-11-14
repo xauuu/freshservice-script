@@ -95,8 +95,8 @@
 }
 .custom-portal header {
     background-color: white;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
     display: flex;
     justify-content: space-between;
     align-items: center;
