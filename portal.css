@@ -2,8 +2,6 @@
 .custom-container {
     font-family: "Inter", sans-serif;
     color: var(--text-color);
-    max-width: 1440px;
-    margin: 0 auto;
     position: relative;
 }
 .custom-container.retail {
@@ -62,6 +60,10 @@
 }
 .custom-container .text-center {
     text-align: center;
+}
+.custom-container .w-1440 {
+    max-width: 1440px;
+    margin: 0 auto;
 }
 .custom-container header {
     background-color: white;
@@ -168,6 +170,16 @@
     color: white;
     border-radius: 6px;
     font-size: 14px;
+}
+.custom-container header .user {
+    display: flex;
+}
+.custom-container header .username {
+    color: #fff;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
 .custom-container main .banner {
     background: center no-repeat;
@@ -597,4 +609,4 @@
     #pagination {
         position: inherit;
     }
-}
+} /*# sourceMappingURL=style.css.map */
