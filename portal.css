@@ -14,11 +14,10 @@
     --card-bg-color: #292e69;
 }
 .custom-portal i.ficon-notifications {
-    height: 37px !important;
     color: var(--text-color) !important;
 }
 .custom-portal i.ficon-notifications:hover {
-    background-color: var(--bg-color) !important;
+    background-color: var(--secondary-color) !important;
     color: white !important;
 }
 .custom-portal header #menu-icon img.menu-white {
