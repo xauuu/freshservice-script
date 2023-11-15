@@ -1,8 +1,7 @@
 $(document).ready(function () {
     var lang = document.documentElement.lang || "en";
     var site = localStorage.getItem("site") || "";
-    var workspacesString = $("#portal-script").data("workspaces") || "";
-    var workspaces = JSON.parse(workspacesString || null);
+    var workspaces = $("#portal-script").data("workspaces") || [];
     var workspace_id = workspaces
         ? Object.keys(workspaces).find(function (k) {
               return workspaces[k]?.toLowerCase() === site?.toLowerCase();
