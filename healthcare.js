@@ -363,7 +363,7 @@ function formatDate(date) {
     if (hh < 10) hh = "0" + hh;
     if (min < 10) min = "0" + min;
 
-    const formattedToday = hh + ":" + min + " " + dd + "-" + mm + "-" + yyyy;
+    const formattedToday = dd + "/" + mm + "/" + yyyy + ", " + hh + ":" + min;
     return formattedToday;
 }
 
