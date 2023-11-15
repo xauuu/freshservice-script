@@ -98,63 +98,7 @@ columnsApproval = [
 //demands
 $(document).ready(function () {
     try {
-        var datatable = document.getElementById("datatable-demands-approval");
-        $.ajax({
-            type: "GET",
-            headers: authHeader,
-            url: `/api/v2/objects/27000052793/records?query=ticket_number%20%3A%20%27${ticket_id}%27`,
-            dataType: "json",
-            success: function (response) {
-                const rows = response.records.map((item, index) => {
-                    const data = item.data;
-                    return {
-                        ...data,
-                        no: index + 1
-                    };
-                });
-                if (rows.length > 0) {
-                    datatable.columns = columnsApproval;
-                    datatable.rows = rows;
-                }
-            }
-        });
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-// assessment
-$(document).ready(function () {
-    try {
-        var datatable = document.getElementById("datatable-assessment-approval");
-        $.ajax({
-            type: "GET",
-            headers: authHeader,
-            url: `/api/v2/objects/27000052793/records?query=ticket_number%20%3A%20%27${ticket_id}%27`,
-            dataType: "json",
-            success: function (response) {
-                const rows = response.records.map((item, index) => {
-                    const data = item.data;
-                    return {
-                        ...data,
-                        no: index + 1
-                    };
-                });
-                if (rows.length > 0) {
-                    datatable.columns = columnsApproval;
-                    datatable.rows = rows;
-                }
-            }
-        });
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-// finalize
-$(document).ready(function () {
-    try {
-        var datatable = document.getElementById("datatable-finalize-approval");
+        var datatable = document.getElementById("datatable-activity-logs");
         $.ajax({
             type: "GET",
             headers: authHeader,
@@ -411,11 +355,15 @@ function formatDate(date) {
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1;
     let dd = today.getDate();
+    let hh = today.getHours();
+    let min = today.getMinutes();
 
     if (dd < 10) dd = "0" + dd;
     if (mm < 10) mm = "0" + mm;
+    if (hh < 10) hh = "0" + hh;
+    if (min < 10) min = "0" + min;
 
-    const formattedToday = dd + "-" + mm + "-" + yyyy;
+    const formattedToday = hh + ":" + min + " " + dd + "-" + mm + "-" + yyyy;
     return formattedToday;
 }
 
