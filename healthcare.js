@@ -222,7 +222,7 @@ $(document).ready(function () {
                 {
                     name: "priority",
                     label: "Priority",
-                    type: "PARAGRAPH",
+                    type: "DROPDOWN",
                     required: true,
                     choices: [
                         {
