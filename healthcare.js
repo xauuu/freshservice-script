@@ -190,6 +190,8 @@ $(document).ready(function () {
     const btnEditAssessment = document.querySelector("#btn-edit-assessment");
     const btnEditFinalize = document.querySelector("#btn-edit-finalize");
     var requesters = [];
+    const fields = JSON.parse($("#requested-item-fields").val());
+
     $.ajax({
         type: "GET",
         headers: authHeader,
@@ -268,6 +270,8 @@ $(document).ready(function () {
             option_label_path: "value",
             option_value_path: "id"
         });
+        form.initialValues = getFormValues(4, 7);
+
         modal.open();
     });
     btnEditAssessment.addEventListener("click", async (e) => {
@@ -299,6 +303,7 @@ $(document).ready(function () {
             option_label_path: "value",
             option_value_path: "id"
         });
+        form.initialValues = getFormValues(8, 9);
         modal.open();
     });
     btnEditFinalize.addEventListener("click", async (e) => {
@@ -331,6 +336,7 @@ $(document).ready(function () {
             option_label_path: "value",
             option_value_path: "id"
         });
+        form.initialValues = getFormValues(10, 11);
         modal.open();
     });
 
@@ -373,6 +379,16 @@ $(document).ready(function () {
             }
         });
     });
+
+    function getFormValues(start, end) {
+        const result = {};
+        fields?.map((item, index) => {
+            if (index >= start && index <= end) {
+                result[item.name?.replace(/^cf_|_535993$/g, "")] = item.value;
+            }
+        });
+        return result;
+    }
 });
 
 function convertViToEn(str, toUpperCase = false) {
