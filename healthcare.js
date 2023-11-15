@@ -6,6 +6,16 @@ requester_id = $("#healthcare").data("requester_id");
 //check tab
 $(document).ready(function () {
     const tabs = ["information", "demands", "assessment", "finalize"];
+    const state_tab = {
+        0: "information",
+        1: "information",
+        2: "demands",
+        3: "demands",
+        4: "assessment",
+        5: "assessment",
+        6: "finalize",
+        7: "finalize"
+    };
     const app_code = "healthcare_pmo";
     const process_code = "healthcare_pmo_change_request";
     $.ajax({
@@ -45,7 +55,7 @@ $(document).ready(function () {
     }
 
     function checkTab(views) {
-        const activeTab = tabs[ticket_state];
+        const activeTab = state_tab[ticket_state];
         views.forEach((view, index) => {
             if (tabs.includes(view)) {
                 const item = $(`li.custom-tab-item[data-tab="#${view}"]`);
@@ -173,7 +183,7 @@ $(document).ready(function () {
     const modal = document.querySelector("fw-modal#modal-healthcare");
     const modalTitle = document.querySelector("#modal-healthcare-title");
     const btnSave = document.querySelector("#btn-healthcare-save");
-    const btnSubmit = document.querySelector("#btn-healthcare-save");
+    const btnSubmit = document.querySelector("#btn-healthcare-submit");
     const form = document.createElement("fw-form");
     const formContainer = document.querySelector("#healthcare-form-container");
     const btnEditDemand = document.querySelector("#btn-edit-demands");
@@ -345,7 +355,6 @@ $(document).ready(function () {
     });
 
     btnSubmit.addEventListener("click", async (e) => {
-        console.log(values);
         $.ajax({
             type: "PUT",
             headers: authHeader,
