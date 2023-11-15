@@ -1,9 +1,17 @@
-function renderHome() {
-    var lang = $("#portal-script").data("language");
-    var workspace_id = $("#portal-script").data("workspace_id");
+$(document).ready(function () {
+    var lang = document.documentElement.lang || "en";
+    var site = localStorage.getItem("site") || "";
+    var workspacesString = $("#portal-script").data("workspaces") || "";
+    var workspaces = JSON.parse(workspacesString || null);
+    var workspace_id = workspaces
+        ? Object.keys(workspaces).find(function (k) {
+              return workspaces[k]?.toLowerCase() === site?.toLowerCase();
+          })
+        : null;
 
     var modal = $(".modal-container");
     var close = $(".close");
+
     close.click(function () {
         modal.hide();
     });
@@ -121,34 +129,27 @@ function renderHome() {
     });
 
     $(document).ready(function () {
+        const param = workspace_id ? `?workspace_id=${workspace_id}` : "";
         jQuery.ajax({
             type: "GET",
-            url: `/api/v2/solutions/categories?workspace_id=${workspace_id}`,
+            url: `/api/v2/solutions/categories${param}`,
             dataType: "json",
             headers: authHeader,
             success: function (response) {
                 renderCategory(response.categories?.slice(1));
-                renderFooter(response.categories?.slice(1));
             }
         });
         function renderCategory(list) {
             let html = ``;
+            let footer = ``;
             jQuery.map(list, function (item, index) {
-                const { id, name } = item;
-                html += `<a href="/support/solutions/${id}">${name}</a>`;
+                const { id, name, translations } = item;
+                const transName = lang === "en" ? name : (translations.vi && translations.vi.name) || name;
+                if (index < 4) footer += `<li><a href="/solutions/${id}">${transName}</a></li>`;
+                html += `<a href="/support/solutions/${id}">${transName}</a>`;
             });
             jQuery(".solutions").html(html);
-        }
-        function renderFooter(list) {
-            let html = ``;
-            jQuery.map(list, function (item, index) {
-                if (index > 3) return;
-                const { id, name } = item;
-                html += `<li><a href="/solutions/${id}">${name}</a></li>`;
-            });
-            jQuery("#services").html(html);
+            jQuery("#services").html(footer);
         }
     });
-}
-
-renderHome();
+});
