@@ -46,7 +46,7 @@ $(document).ready(function () {
 
     function checkTab(views) {
         const activeTab = tabs[ticket_state];
-        views.forEach((view) => {
+        views.forEach((view, index) => {
             if (tabs.includes(view)) {
                 const item = $(`li.custom-tab-item[data-tab="#${view}"]`);
                 item.removeClass("muted").removeAttr("disabled");
@@ -173,6 +173,7 @@ $(document).ready(function () {
     const modal = document.querySelector("fw-modal#modal-healthcare");
     const modalTitle = document.querySelector("#modal-healthcare-title");
     const btnSave = document.querySelector("#btn-healthcare-save");
+    const btnSubmit = document.querySelector("#btn-healthcare-save");
     const form = document.createElement("fw-form");
     const formContainer = document.querySelector("#healthcare-form-container");
     const btnEditDemand = document.querySelector("#btn-edit-demands");
@@ -201,6 +202,7 @@ $(document).ready(function () {
     });
     btnEditDemand.addEventListener("click", async (e) => {
         e.preventDefault();
+        modalTitle.innerHTML = "Edit Demands";
         const formSchema = {
             name: "Demand Form",
             fields: [
@@ -260,6 +262,7 @@ $(document).ready(function () {
     });
     btnEditAssessment.addEventListener("click", async (e) => {
         e.preventDefault();
+        modalTitle.innerHTML = "Edit Assessment";
         const formSchema = {
             name: "Demand Form",
             fields: [
@@ -290,6 +293,8 @@ $(document).ready(function () {
     });
     btnEditFinalize.addEventListener("click", async (e) => {
         e.preventDefault();
+        modalTitle.innerHTML = "Edit Finalize";
+
         const formSchema = {
             name: "Finalize Form",
             fields: [
@@ -322,6 +327,42 @@ $(document).ready(function () {
     btnSave.addEventListener("click", async (e) => {
         const { values, isValid } = await form.doSubmit(e);
         console.log(values);
+        $.ajax({
+            type: "PUT",
+            headers: authHeader,
+            url: `/api/v2/tickets/${ticket_id}/requested_items/${requested_item_id}`,
+            dataType: "json",
+            data: JSON.stringify({
+                custom_fields: values
+            }),
+            success: function (response) {
+                location.reload();
+            },
+            error: function (err) {
+                console.log("Error in get role: " + err);
+            }
+        });
+    });
+
+    btnSubmit.addEventListener("click", async (e) => {
+        console.log(values);
+        $.ajax({
+            type: "PUT",
+            headers: authHeader,
+            url: `/api/v2/tickets/${ticket_id}`,
+            dataType: "json",
+            data: JSON.stringify({
+                custom_fields: {
+                    ticket_state: ticket_state + 1
+                }
+            }),
+            success: function (response) {
+                location.reload();
+            },
+            error: function (err) {
+                console.log("Error in get role: " + err);
+            }
+        });
     });
 });
 
