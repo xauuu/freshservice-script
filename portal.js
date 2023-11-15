@@ -97,6 +97,7 @@ $(document).ready(function () {
                 modal.show();
                 const appCode = jQuery(this).data("app");
                 const title = jQuery(this).data("title");
+                $("#sr-modal-title").html(title);
                 $("input[name=app_code]").val(appCode);
                 const newPList = processList.filter((item) => item.data.app_code == appCode);
                 renderProcess(newPList);
