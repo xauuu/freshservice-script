@@ -3,6 +3,7 @@ requested_item_id = $("#healthcare").data("requested_item_id");
 ticket_state = $("#healthcare").data("ticket_state");
 requester_id = $("#healthcare").data("requester_id");
 
+//check tab
 $(document).ready(function () {
     const tabs = ["information", "demands", "assessment", "finalize"];
     const app_code = "healthcare_pmo";
@@ -166,6 +167,162 @@ $(document).ready(function () {
     } catch (error) {
         console.error(error);
     }
+});
+
+$(document).ready(function () {
+    const modal = document.querySelector("fw-modal#modal-healthcare");
+    const modalTitle = document.querySelector("#modal-healthcare-title");
+    const btnSave = document.querySelector("#btn-healthcare-save");
+    const form = document.createElement("fw-form");
+    const formContainer = document.querySelector("#healthcare-form-container");
+    const btnEditDemand = document.querySelector("#btn-edit-demands");
+    const btnEditAssessment = document.querySelector("#btn-edit-assessment");
+    const btnEditFinalize = document.querySelector("#btn-edit-finalize");
+    var requesters = [];
+    $.ajax({
+        type: "GET",
+        headers: authHeader,
+        url: `/api/v2/requesters`,
+        dataType: "json",
+        success: function (response) {
+            requesters = response.requesters.map((item) => {
+                return {
+                    id: item.id,
+                    value: `${item.first_name} ${item.last_name}`
+                };
+            });
+        },
+        error: function (err) {
+            console.log("Error in get role: " + err);
+        }
+    });
+    modal.addEventListener("fwClose", function () {
+        form.formSchema = {};
+    });
+    btnEditDemand.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const formSchema = {
+            name: "Demand Form",
+            fields: [
+                {
+                    name: "demands_gathering_assignee",
+                    label: "Demands Gathering Assignee",
+                    type: "DROPDOWN",
+                    required: true,
+                    placeholder: "Enter…",
+                    choices: []
+                },
+                {
+                    name: "demands",
+                    label: "Demands",
+                    type: "PARAGRAPH",
+                    required: true,
+                    placeholder: "Enter…"
+                },
+                {
+                    name: "priority",
+                    label: "Priority",
+                    type: "PARAGRAPH",
+                    required: true,
+                    choices: [
+                        {
+                            value: "Low",
+                            text: "Low",
+                            position: 1
+                        },
+                        {
+                            value: "Medium",
+                            text: "Medium",
+                            position: 2
+                        },
+                        {
+                            value: "High",
+                            text: "High",
+                            position: 2
+                        }
+                    ]
+                },
+                {
+                    name: "time_to_deploy",
+                    label: "Time To Deploy",
+                    type: "DATE",
+                    required: true
+                }
+            ]
+        };
+        formContainer.prepend(form);
+        form.formSchema = formSchema;
+        await form.setFieldChoices("demands_gathering_assignee", requesters, {
+            option_label_path: "value",
+            option_value_path: "id"
+        });
+        modal.open();
+    });
+    btnEditAssessment.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const formSchema = {
+            name: "Demand Form",
+            fields: [
+                {
+                    name: "assessment_assignee",
+                    label: "Assessment Assignee",
+                    type: "DROPDOWN",
+                    required: true,
+                    placeholder: "Enter…",
+                    choices: []
+                },
+                {
+                    name: "assessment",
+                    label: "Assessment",
+                    type: "PARAGRAPH",
+                    required: true,
+                    placeholder: "Enter…"
+                }
+            ]
+        };
+        formContainer.prepend(form);
+        form.formSchema = formSchema;
+        await form.setFieldChoices("assessment_assignee", requesters, {
+            option_label_path: "value",
+            option_value_path: "id"
+        });
+        modal.open();
+    });
+    btnEditFinalize.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const formSchema = {
+            name: "Finalize Form",
+            fields: [
+                {
+                    name: "finalize_requirement_assignee",
+                    label: "Finalize Requirement Assignee",
+                    type: "DROPDOWN",
+                    required: true,
+                    placeholder: "Enter…",
+                    choices: []
+                },
+                {
+                    name: "demands",
+                    label: "final_requirements",
+                    type: "PARAGRAPH",
+                    required: true,
+                    placeholder: "Enter…"
+                }
+            ]
+        };
+        formContainer.prepend(form);
+        form.formSchema = formSchema;
+        await form.setFieldChoices("finalize_requirement_assignee", requesters, {
+            option_label_path: "value",
+            option_value_path: "id"
+        });
+        modal.open();
+    });
+
+    btnSave.addEventListener("click", async (e) => {
+        const { values, isValid } = await form.doSubmit(e);
+        console.log(values);
+    });
 });
 
 function convertViToEn(str, toUpperCase = false) {
