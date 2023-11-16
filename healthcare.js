@@ -266,8 +266,8 @@ $(document).ready(function () {
                     choices: []
                 },
                 {
-                    name: "demands",
-                    label: "final_requirements",
+                    name: "final_requirements",
+                    label: "Final Requirements",
                     type: "PARAGRAPH",
                     required: true,
                     placeholder: "Enter…"
