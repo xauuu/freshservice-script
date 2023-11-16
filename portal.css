@@ -2,7 +2,7 @@
 .custom-portal {
   --primary-color: #2579ff;
   --secondary-color: #9ea7b1;
-  --footer-color: #12174e;
+  --footer-color: #f6f8f9;
   --bg-color: #f6f8f9;
   --text-color: #31373f;
   --card-bg-color: #292e69;
@@ -15,7 +15,7 @@
 .custom-portal[site=retail] {
   --primary-color: #2579ff;
   --secondary-color: #9ea7b1;
-  --footer-color: #12174e;
+  --footer-color: #f6f8f9;
   --bg-color: #f6f8f9;
   --text-color: #31373f;
   --card-bg-color: #292e69;
@@ -24,7 +24,7 @@
 .custom-portal[site=healthcare] {
   --primary-color: #2579ff;
   --secondary-color: #9ea7b1;
-  --footer-color: #12174e;
+  --footer-color: #f6f8f9;
   --bg-color: #f6f8f9;
   --text-color: #31373f;
   --card-bg-color: #292e69;
@@ -332,9 +332,6 @@
 .custom-portal footer .footer-container .col-2 {
   flex: 0 0 20%;
 }
-.custom-portal footer .footer-container .logo-footer {
-  width: 200px;
-}
 .custom-portal footer .footer-container h6 {
   color: #a6a9cd;
   font-size: 16px;
@@ -343,7 +340,7 @@
   line-height: normal;
 }
 .custom-portal footer .footer-container h4 {
-  color: #fff;
+  color: var(--text-color);
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
@@ -358,10 +355,10 @@
   align-items: center;
 }
 .custom-portal footer .footer-container ul li a {
-  color: #a6a9cd;
+  color: var(--secondary-color);
 }
 .custom-portal footer .footer-container ul li a:hover {
-  color: #fff;
+  color: var(--primary-color);
 }
 .custom-portal footer .footer-container ul li:not(:first-child) {
   margin-top: 12px;
