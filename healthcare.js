@@ -139,7 +139,7 @@ $(document).ready(function () {
     $.ajax({
         type: "GET",
         headers: authHeader,
-        url: `/api/v2/requesters`,
+        url: `/api/v2/requesters?active=true`,
         dataType: "json",
         success: function (response) {
             requesters = response.requesters.map((item) => {

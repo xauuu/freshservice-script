@@ -271,17 +271,21 @@
     padding: 8px 21px;
     background-color: var(--card-bg-color);
 }
-.custom-portal main .service-catalogs {
+.custom-portal main .service-catalogs-container {
     padding-top: 80px;
     padding-bottom: 80px;
+    background-color: var(--bg-color);
+}
+.custom-portal main .service-catalogs-container .service-catalogs {
+    max-width: 1174px;
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    background-color: var(--bg-color);
 }
-.custom-portal main .service-catalogs .item {
+.custom-portal main .service-catalogs-container .service-catalogs .item {
     display: flex;
     gap: 12px;
     width: 338px;
@@ -290,7 +294,7 @@
     border-radius: 8px;
     cursor: pointer;
 }
-.custom-portal main .service-catalogs .item .icon {
+.custom-portal main .service-catalogs-container .service-catalogs .item .icon {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -299,15 +303,15 @@
     align-items: center;
     justify-content: center;
 }
-.custom-portal main .service-catalogs .item .content {
+.custom-portal main .service-catalogs-container .service-catalogs .item .content {
     flex: 1;
 }
-.custom-portal main .service-catalogs .item .content .name {
+.custom-portal main .service-catalogs-container .service-catalogs .item .content .name {
     color: var(--text-color);
     font-size: 20px;
     font-weight: 600;
 }
-.custom-portal main .service-catalogs .item .content .description {
+.custom-portal main .service-catalogs-container .service-catalogs .item .content .description {
     color: var(--secondary-color);
     font-size: 14px;
     font-weight: 400;
@@ -483,7 +487,7 @@
     -moz-column-gap: 50px;
     column-gap: 50px;
     row-gap: 32px;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
 }
 .custom-portal .modal-container .modal .modal-content .service-items .item {
