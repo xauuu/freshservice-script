@@ -158,7 +158,7 @@ $(document).ready(function () {
     });
     btnEditDemand.addEventListener("click", async (e) => {
         e.preventDefault();
-        modalTitle.innerHTML = "Edit Demands";
+        modalTitle.innerHTML = "Edit Impact Analysis";
         const formSchema = {
             name: "Demand Form",
             fields: [
@@ -220,7 +220,7 @@ $(document).ready(function () {
     });
     btnEditAssessment.addEventListener("click", async (e) => {
         e.preventDefault();
-        modalTitle.innerHTML = "Edit Assessment";
+        modalTitle.innerHTML = "Edit Review";
         const formSchema = {
             name: "Demand Form",
             fields: [
@@ -252,7 +252,7 @@ $(document).ready(function () {
     });
     btnEditFinalize.addEventListener("click", async (e) => {
         e.preventDefault();
-        modalTitle.innerHTML = "Edit Finalize";
+        modalTitle.innerHTML = "Edit Implementation";
 
         const formSchema = {
             name: "Finalize Form",
