@@ -30,6 +30,15 @@
     --card-bg-color: #292e69;
     --text-heading: #fff;
 }
+.custom-portal[site="bank"] {
+    --primary-color: #2579ff;
+    --secondary-color: #9ea7b1;
+    --footer-color: #f6f8f9;
+    --bg-color: #f6f8f9;
+    --text-color: #31373f;
+    --card-bg-color: #292e69;
+    --text-heading: #fff;
+}
 .custom-portal i.ficon-notifications {
     color: var(--text-color) !important;
 }

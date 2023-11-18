@@ -34,10 +34,10 @@ $(document).ready(function () {
 
             renderProcess(filteredProcesses);
         });
-
+        const param = workspace_id ? `workspace_id%20%3A%20%27${workspace_id}%27%20AND%20` : "";
         jQuery.ajax({
             type: "GET",
-            url: `/api/v2/objects/27000052210/records?query=language%20%3A%20%27${lang}%27%20AND%20is_active%20%3A%20%271%27`,
+            url: `/api/v2/objects/27000052210/records?query=${param}is_active%20%3A%20%271%27`,
             dataType: "json",
             headers: authHeader,
             success: function (response) {
