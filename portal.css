@@ -213,6 +213,7 @@
 }
 .custom-portal header .user {
   display: flex;
+  align-items: center;
 }
 .custom-portal header .username {
   color: #fff;
