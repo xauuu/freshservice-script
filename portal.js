@@ -107,7 +107,7 @@ $(document).ready(function () {
         function renderProcess(list) {
             $("#pagination-item").pagination({
                 dataSource: list,
-                pageSize: 4,
+                pageSize: 6,
                 callback: function (data, pagination) {
                     let html = "";
                     $.each(data, function (index, item) {
