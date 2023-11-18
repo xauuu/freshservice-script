@@ -51,13 +51,13 @@ $(document).ready(function () {
             const uniqueAppInfo = new Map();
 
             jsonData.forEach((record) => {
-                const { app_code, app_name, app_image } = record.data;
+                const { app_code, app_name, app_image, app_description } = record.data;
 
                 const key = `${app_code}-${app_name}`;
-                if (app_image) {
-                    uniqueAppInfo.set(key, { app_code, app_name, app_image });
+                if (app_description) {
+                    uniqueAppInfo.set(key, { app_code, app_name, app_image, app_description });
                 } else if (!uniqueAppInfo.has(key)) {
-                    uniqueAppInfo.set(key, { app_code, app_name, app_image: "" });
+                    uniqueAppInfo.set(key, { app_code, app_name, app_image: "", app_description });
                 }
             });
             const result = Array.from(uniqueAppInfo.values());
@@ -67,7 +67,7 @@ $(document).ready(function () {
         function renderApp(list) {
             let html = "";
             jQuery.map(list, function (item, index) {
-                const { app_name, app_code, app_image } = item;
+                const { app_name, app_code, app_description } = item;
                 html += `<div class="item" data-app="${app_code}" data-title="${app_name}">
                                 <div class="icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -86,7 +86,7 @@ $(document).ready(function () {
                                 </div>
                                 <div class="content">
                                     <div class="name">${app_name}</div>
-                                    <div class="description max-line-2">${app_name}</div>
+                                    <div class="description max-line-2">${app_description}</div>
                                 </div>
                             </div>`;
             });
