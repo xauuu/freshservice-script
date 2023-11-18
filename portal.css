@@ -494,8 +494,8 @@
 .custom-portal .modal-container .modal .modal-content .service-items {
   display: flex;
   flex-wrap: wrap;
-  -moz-column-gap: 50px;
-       column-gap: 50px;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
   row-gap: 32px;
   justify-content: start;
   align-items: center;
