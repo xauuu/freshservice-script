@@ -136,7 +136,7 @@ $(document).ready(function () {
             dataType: "json",
             headers: authHeader,
             success: function (response) {
-                renderCategory(response.categories?.slice(1));
+                renderCategory(response.categories);
             }
         });
         function renderCategory(list) {

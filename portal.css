@@ -109,10 +109,11 @@
     background-color: white;
     padding-top: 20px !important;
     padding-bottom: 20px !important;
+}
+.custom-portal header .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 2;
 }
 .custom-portal header .logo img {
     height: 32px;
@@ -327,7 +328,7 @@
     margin-top: 8px;
 }
 .custom-portal footer {
-    padding: 76px 112px 25px;
+    padding: 76px 123px 25px;
     background: var(--footer-color);
 }
 .custom-portal footer .footer-container {
@@ -603,6 +604,7 @@
         width: -webkit-fill-available;
         position: fixed;
         top: 0;
+        z-index: 11;
     }
     .custom-portal header .nav {
         margin-left: auto;
