@@ -51,14 +51,10 @@ $(document).ready(function () {
             const uniqueAppInfo = new Map();
 
             jsonData.forEach((record) => {
-                const { app_code, app_name, app_image, app_description } = record.data;
+                const { app_code, app_name, app_description, app_url } = record.data;
 
                 const key = `${app_code}-${app_name}`;
-                if (app_description) {
-                    uniqueAppInfo.set(key, { app_code, app_name, app_image, app_description });
-                } else if (!uniqueAppInfo.has(key)) {
-                    uniqueAppInfo.set(key, { app_code, app_name, app_image: "", app_description });
-                }
+                uniqueAppInfo.set(key, { app_code, app_name, app_description, app_url });
             });
             const result = Array.from(uniqueAppInfo.values());
             return result;
