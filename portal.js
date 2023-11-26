@@ -54,7 +54,11 @@ $(document).ready(function () {
                 const { app_code, app_name, app_description, app_url } = record.data;
 
                 const key = `${app_code}-${app_name}`;
-                uniqueAppInfo.set(key, { app_code, app_name, app_description, app_url });
+                if (app_url) {
+                    uniqueAppInfo.set(key, { app_code, app_name, app_description, app_url });
+                } else if (!uniqueAppInfo.has(key)) {
+                    uniqueAppInfo.set(key, { app_code, app_name, app_description, app_url: "" });
+                }
             });
             const result = Array.from(uniqueAppInfo.values());
             return result;
@@ -64,7 +68,7 @@ $(document).ready(function () {
             let html = "";
             jQuery.map(list, function (item, index) {
                 const { app_name, app_code, app_url, app_description } = item;
-                html += `<a href="${app_url}" class="item" data-app="${app_code}" data-title="${app_name}">
+                html += `<a href="${app_url}" class="item">
                                 <div class="icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                         <g clip-path="url(#clip0_9606_143)">
