@@ -67,8 +67,8 @@ $(document).ready(function () {
         function renderApp(list) {
             let html = "";
             jQuery.map(list, function (item, index) {
-                const { app_name, app_code, app_description } = item;
-                html += `<div class="item" data-app="${app_code}" data-title="${app_name}">
+                const { app_name, app_code, app_url, app_description } = item;
+                html += `<a href="${app_url}" class="item" data-app="${app_code}" data-title="${app_name}">
                                 <div class="icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                         <g clip-path="url(#clip0_9606_143)">
@@ -88,20 +88,20 @@ $(document).ready(function () {
                                     <div class="name">${app_name}</div>
                                     <div class="description max-line-2">${app_description}</div>
                                 </div>
-                            </div>`;
+                            </a>`;
             });
 
             jQuery(".service-catalogs").html(html);
-            $(".service-catalogs .item").click(function (e) {
-                e.preventDefault();
-                modal.show();
-                const appCode = jQuery(this).data("app");
-                const title = jQuery(this).data("title");
-                $("#sr-modal-title").html(title);
-                $("input[name=app_code]").val(appCode);
-                const newPList = processList.filter((item) => item.data.app_code == appCode);
-                renderProcess(newPList);
-            });
+            // $(".service-catalogs .item").click(function (e) {
+            //     e.preventDefault();
+            //     modal.show();
+            //     const appCode = jQuery(this).data("app");
+            //     const title = jQuery(this).data("title");
+            //     $("#sr-modal-title").html(title);
+            //     $("input[name=app_code]").val(appCode);
+            //     const newPList = processList.filter((item) => item.data.app_code == appCode);
+            //     renderProcess(newPList);
+            // });
         }
 
         function renderProcess(list) {
