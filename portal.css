@@ -48,7 +48,8 @@
   --card-bg-color: #292e69;
   --text-heading: #fff;
 }
-.custom-portal[site=real-estate] {
+.custom-portal[site=real-estate],
+.custom-portal[site=corp]{
   --primary-color: #2579ff;
   --secondary-color: #9ea7b1;
   --footer-color: #f6f8f9;
