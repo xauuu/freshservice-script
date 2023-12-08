@@ -1,4 +1,8 @@
 jQuery(document).ready(function () {
+    const ticket_id = $("#tabs").data("ticket_id");
+    const process_category_id = $("#tabs").data("process_category_id");
+    const process_tabs_id = $("#tabs").data("process_tabs_id");
+
     setTimeout(initChevron(), 300);
 
     function initChevron() {
@@ -94,10 +98,82 @@ jQuery(document).ready(function () {
         resizeListener = setTimeout(initChevron(), 300);
     });
 
-    jQuery(".custom-tab-item").click(function (e) {
+    $(".chevron-list").on("click", ".custom-tab-item", function (e) {
         if ($(this).attr("disabled")) return;
+
         $(this).addClass("active").siblings().removeClass("active");
 
         $($(this).data("tab")).addClass("active").siblings().removeClass("active");
+    });
+
+    function getData(url) {
+        return $.ajax({
+            url: url,
+            type: "GET",
+            headers: authHeader
+        });
+    }
+    function insertTab(data) {
+        var newLi = $("<li>", {
+            class: "custom-tab-item",
+            "data-tab": `#${data.tab_code}`
+        });
+
+        var divInsideLi = $("<div>", {
+            "data-ellipsis": "true",
+            style: "overflow: visible",
+            text: data.tab_name
+        });
+        newLi.append(divInsideLi);
+        $("#tabList li:eq(0)").after(newLi);
+        initChevron();
+    }
+
+    async function initTabContent(related_custom_object, data) {
+        const fields = JSON.parse(data.fields);
+        getData(`/api/v2/objects/${related_custom_object}/records?query=ticket_id : '${ticket_id}'`).then(async (response) => {
+            const records = response.records;
+            if (Boolean(data.is_table)) {
+                const section = $("<section>", {
+                    class: "custom-tab-content",
+                    id: data.tab_code
+                });
+                var datatable = document.createElement("fw-data-table");
+                datatable.columns = fields?.map(function (item) {
+                    return { text: item.label, key: item.name };
+                });
+                datatable.rows = records?.map((item) => item.data);
+                section.append(datatable);
+                $("#sr-detail").append(section);
+            } else {
+                const section = $("<section>", {
+                    class: "custom-tab-content",
+                    id: data.tab_code
+                });
+                var form = document.createElement("fw-form");
+                section.prepend(form);
+                form.formSchema = {
+                    name: data.tab_code,
+                    fields: fields?.map(function (item) {
+                        return { ...item, type: item.type.toUpperCase(), readonly: true };
+                    })
+                };
+                form.initialValues = records[0]?.data;
+
+                $("#sr-detail").append(section);
+            }
+        });
+    }
+
+    getData(`/api/v2/tickets/${ticket_id}/requested_items`).then(async (response) => {
+        const requestedItem = response.requested_items[0];
+        const [categoryResponse, tabResponse] = await Promise.all([
+            getData(`/api/v2/objects/${process_category_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`),
+            getData(`/api/v2/objects/${process_tabs_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`)
+        ]);
+        tabResponse?.records.forEach((item) => {
+            insertTab(item.data);
+            initTabContent(categoryResponse.records[0]?.data.related_custom_object, item.data);
+        });
     });
 });
