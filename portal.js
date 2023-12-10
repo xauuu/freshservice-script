@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var lang = document.documentElement.lang || "en";
+    var lang = localStorage.getItem("lang") || "en";
     var site = localStorage.getItem("site") || "";
     var workspaces = $("#portal-script").data("workspaces") || [];
     var workspace_id = workspaces
