@@ -10,6 +10,7 @@ jQuery(document).ready(function () {
     const ticket_id = $("#tabs-script").data("ticket_id");
     const process_category_id = $("#tabs-script").data("process_category_id");
     const process_tabs_id = $("#tabs-script").data("process_tabs_id");
+    const requester_id = $("#tabs-script").data("requester_id");
 
     setTimeout(initChevron(), 300);
 
@@ -130,53 +131,154 @@ jQuery(document).ready(function () {
         initChevron();
     }
 
-    async function initTabContent(related_custom_object, data) {
+    async function initTabContent(data) {
         const fields = JSON.parse(data.fields);
-        getData(`/api/v2/objects/${related_custom_object}/records?query=ticket_id : '${ticket_id}'`).then(async (response) => {
-            const records = response.records;
-            if (Boolean(data.is_table)) {
-                const section = $("<section>", {
-                    class: "custom-tab-content",
-                    id: data.tab_code
-                });
-                var datatable = document.createElement("fw-data-table");
-                datatable.columns = fields?.map(function (item) {
-                    return { text: item.label, key: item.name };
-                });
-                datatable.rows = records?.map((item) => item.data);
-                section.append(datatable);
-                $("#sr-detail").append(section);
-            } else {
-                const section = $("<section>", {
-                    class: "custom-tab-content",
-                    id: data.tab_code
-                });
-                var form = document.createElement("fw-form");
-                section.prepend(form);
-                form.formSchema = {
-                    name: data.tab_code,
-                    fields: fields?.map(function (item) {
-                        return { ...item, type: item.type.toUpperCase(), readonly: true };
-                    })
-                };
-                form.initialValues = records[0]?.data;
+        const response = await getData(`/api/v2/objects/${data.custom_object_id}/records?query=ticket_id : '${ticket_id}'`);
+        const records = response.records;
 
-                $("#sr-detail").append(section);
-            }
+        const section = $("<section>", {
+            class: "custom-tab-content",
+            id: data.tab_code
         });
+
+        if (Boolean(data.is_table)) {
+            const button = $("<fw-button>", {
+                "modal-trigger-id": `modal-${data.tab_code}`
+            });
+            button.text("Add New");
+
+            const datatable = document.createElement("fw-data-table");
+            datatable.columns = fields?.map((item) => ({ text: item.label, key: item.name }));
+            datatable.rows = records?.map((item) => item.data);
+            datatable.rowActions = [
+                {
+                    name: "Edit",
+                    handler: (rowData) => {
+                        console.log(rowData);
+                        document.getElementById(`form-${data.tab_code}`).setFieldsValue(rowData);
+                        document.getElementById(`modal-${data.tab_code}`).open();
+                    },
+                    graphicsProps: { name: "edit" }
+                },
+                {
+                    name: "Delete",
+                    handler: (rowData) => {
+                        $.ajax({
+                            type: "DELETE",
+                            url: `/api/v2/objects/${data.custom_object_id}/records/${rowData.bo_display_id}`,
+                            success: function () {
+                                datatable.rows = datatable.rows.filter((row) => row.bo_display_id !== rowData.bo_display_id);
+                            }
+                        });
+                    },
+                    graphicsProps: { name: "delete" }
+                }
+            ];
+
+            initModal(
+                data,
+                {
+                    name: data.tab_code,
+                    fields: fields?.map((item) => ({ ...item, type: item.type.toUpperCase() }))
+                },
+                datatable
+            );
+
+            section.append(button, datatable);
+        } else {
+            const form = document.createElement("fw-form");
+            section.prepend(form);
+            form.formSchema = {
+                name: data.tab_code,
+                fields: fields?.map((item) => ({ ...item, type: item.type.toUpperCase(), readonly: true }))
+            };
+            form.initialValues = records[0]?.data;
+        }
+
+        $("#sr-detail").append(section);
+    }
+
+    async function checkRole(requester_id, tabConfig) {
+        const [requesters] = await Promise.all([getMemberRequesterGroup(tabConfig.requester_groups_id)]);
+        if ([...requesters].includes(requester_id)) return true;
+        return false;
     }
 
     getData(`/api/v2/tickets/${ticket_id}/requested_items`).then(async (response) => {
         const requestedItem = response.requested_items[0];
-        const [categoryResponse, tabResponse] = await Promise.all([
-            getData(`/api/v2/objects/${process_category_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`),
-            getData(`/api/v2/objects/${process_tabs_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`)
-        ]);
-        tabResponse?.records.forEach((item) => {
-            insertTab(item.data);
-            initTabContent(categoryResponse.records[0]?.data.related_custom_object, item.data);
+        const tabResponse = await getData(`/api/v2/objects/${process_tabs_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`);
+        tabResponse?.records.forEach(async (item) => {
+            const visible = await checkRole(requester_id, item.data);
+            if (visible) {
+                insertTab(item.data);
+                initTabContent(item.data);
+            }
         });
     });
+
+    async function getMemberRequesterGroup(groups) {
+        if (!groups) return [];
+        const result = [];
+        await Promise.all(
+            groups.split(";")?.map(async (item) => {
+                const res = await getData(`/api/v2/requester_groups/${item}/members`);
+                result.push(...res.requesters?.map((item) => item.id));
+            })
+        );
+
+        return result;
+    }
+
+    function initModal(tabConfig, formSchema, datatable) {
+        const modal = $("<fw-modal>", {
+            id: `modal-${tabConfig.tab_code}`,
+            slider: "true",
+            "title-text": tabConfig.tab_name,
+            "submit-text": "Save "
+        });
+
+        const formContainer = document.createElement("div");
+        const form = document.createElement("fw-form");
+        form.id = `form-${tabConfig.tab_code}`;
+        modal.append(formContainer);
+        form.formSchema = formSchema;
+        formContainer.prepend(form);
+
+        $("body").append(modal);
+
+        modal.on("fwClose", function (e) {
+            form.doReset(e);
+        });
+
+        modal.on("fwSubmit", async function (e) {
+            const { values } = await form.doSubmit();
+            let ajaxConfig = {
+                type: "POST",
+                url: `/api/v2/objects/${tabConfig.custom_object_id}/records`
+            };
+
+            if (values.bo_display_id) {
+                ajaxConfig = {
+                    type: "PUT",
+                    url: `/api/v2/objects/${tabConfig.custom_object_id}/records/${values.bo_display_id}`
+                };
+            }
+
+            $.ajax({
+                type: ajaxConfig.type,
+                url: ajaxConfig.url,
+                data: JSON.stringify({ data: { ...values, ticket_id: ticket_id } }),
+                headers: authHeader,
+                success: async function () {
+                    const responseGetData = await getData(`/api/v2/objects/${tabConfig.custom_object_id}/records?query=ticket_id : '${ticket_id}'`);
+                    const records = responseGetData.records;
+                    datatable.rows = records?.map((item) => item.data);
+                    form.doReset(e);
+                    modal[0].close();
+                }
+            });
+        });
+    }
 });
 
 $(document).ready(function () {
