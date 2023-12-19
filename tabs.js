@@ -267,7 +267,7 @@ jQuery(document).ready(function () {
             $.ajax({
                 type: ajaxConfig.type,
                 url: ajaxConfig.url,
-                data: JSON.stringify({ data: { ...values, ticket_id: ticket_id } }),
+                data: JSON.stringify({ data: { ...values, ticket_id: String(ticket_id) } }),
                 headers: authHeader,
                 success: async function () {
                     const responseGetData = await getData(`/api/v2/objects/${tabConfig.custom_object_id}/records?query=ticket_id : '${ticket_id}'`);
