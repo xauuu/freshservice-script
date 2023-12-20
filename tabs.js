@@ -148,8 +148,8 @@ jQuery(document).ready(function () {
             button.text("Add New");
 
             const datatable = document.createElement("fw-data-table");
-            datatable.columns = fields?.map((item) => ({ text: item.label, key: item.name }));
-            datatable.rows = records?.map((item) => item.data);
+            datatable.columns = transformSchema(fields)?.map((item) => ({ text: item.label, key: item.name }));
+            datatable.rows = transformData(records);
             datatable.rowActions = [
                 {
                     name: "Edit",
@@ -165,6 +165,7 @@ jQuery(document).ready(function () {
                     handler: (rowData) => {
                         $.ajax({
                             type: "DELETE",
+                            headers: authHeader,
                             url: `/api/v2/objects/${data.custom_object_id}/records/${rowData.bo_display_id}`,
                             success: function () {
                                 datatable.rows = datatable.rows.filter((row) => row.bo_display_id !== rowData.bo_display_id);
@@ -179,7 +180,7 @@ jQuery(document).ready(function () {
                 data,
                 {
                     name: data.tab_code,
-                    fields: fields?.map((item) => ({ ...item, type: item.type.toUpperCase() }))
+                    fields: fields?.map((item) => ({ ...item, type: getType(item.type) }))
                 },
                 datatable
             );
@@ -190,9 +191,9 @@ jQuery(document).ready(function () {
             section.prepend(form);
             form.formSchema = {
                 name: data.tab_code,
-                fields: fields?.map((item) => ({ ...item, type: item.type.toUpperCase(), readonly: true }))
+                fields: transformSchema(fields)?.map((item) => ({ ...item, type: getType(item.type, false), readonly: true }))
             };
-            form.initialValues = records[0]?.data;
+            form.initialValues = transformData(records)[0];
         }
 
         $("#sr-detail").append(section);
@@ -243,7 +244,7 @@ jQuery(document).ready(function () {
         modal.append(formContainer);
         form.formSchema = formSchema;
         formContainer.prepend(form);
-
+        handleDropdown(form, formSchema.fields);
         $("body").append(modal);
 
         modal.on("fwClose", function (e) {
@@ -272,11 +273,75 @@ jQuery(document).ready(function () {
                 success: async function () {
                     const responseGetData = await getData(`/api/v2/objects/${tabConfig.custom_object_id}/records?query=ticket_id : '${ticket_id}'`);
                     const records = responseGetData.records;
-                    datatable.rows = records?.map((item) => item.data);
+                    datatable.rows = transformData(records);
                     form.doReset(e);
                     modal[0].close();
                 }
             });
+        });
+    }
+
+    function getType(type, isTable = true) {
+        if (type === "lookup") return isTable ? "DROPDOWN" : "TEXT";
+        return type?.toUpperCase();
+    }
+
+    function handleDropdown(form, fields) {
+        const dropdowns = fields.filter((item) => item.type === "DROPDOWN");
+        dropdowns.forEach(async (dropdown) => {
+            const id = dropdown.label.split(" ").pop();
+            if (!isNaN(id)) {
+                const res = await getData(`/api/v2/objects/${id}/records`);
+                if (res.records && res.records.length > 0) {
+                    generateDropdown(dropdown.name, form, res.records);
+                }
+            }
+        });
+    }
+
+    function generateDropdown(container, form, list) {
+        try {
+            const options = list.map((item) => item.data);
+            form.setFieldChoices(container, options, {
+                option_label_path: "display_name",
+                option_value_path: "bo_display_id"
+            });
+            form.addEventListener("fwFormValueChanged", (e) => {
+                const { field, value } = e.detail;
+                if (field == container && value) {
+                    form.setFieldValue(container + "_value", list.find((item) => item.data.bo_display_id == value).data.display_name);
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function transformData(records) {
+        return records.map((record) => {
+            const recordData = record.data;
+            delete recordData.bo_created_by;
+            delete recordData.bo_updated_by;
+            Object.keys(recordData).forEach((field) => {
+                const fieldValue = recordData[field];
+
+                if (fieldValue && fieldValue.id && fieldValue.value) {
+                    recordData[field] = fieldValue.id;
+                    recordData[field + "_value"] = fieldValue.value;
+                }
+            });
+
+            return recordData;
+        });
+    }
+
+    function transformSchema(formSchema) {
+        return formSchema.map((item) => {
+            if (item.type === "lookup") {
+                return { ...item, name: `${item.name}_value`, label: item.label.replace(/\d+$/, "").trim() };
+            }
+
+            return item;
         });
     }
 });
