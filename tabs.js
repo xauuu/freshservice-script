@@ -142,6 +142,12 @@ jQuery(document).ready(function () {
             id: data.tab_code
         });
 
+        const heading = $("<div>", {
+            class: "itil-content-title"
+        });
+        heading.html(data.tab_name);
+        section.append(heading);
+
         if (Boolean(data.is_table)) {
             const buttonContainer = $("<div>", { id: "button-tab" });
             const buttonAdd = $("<fw-button>", {
@@ -163,6 +169,7 @@ jQuery(document).ready(function () {
                         headers: authHeader,
                         success: async function () {
                             showNotification("success", "Submitted request successfully");
+                            window.location.reload(true);
                         }
                     });
                 });
@@ -172,31 +179,32 @@ jQuery(document).ready(function () {
             const datatable = document.createElement("fw-data-table");
             datatable.columns = transformSchema(fields)?.map((item) => ({ text: item.label, key: item.name }));
             datatable.rows = transformData(records);
-            datatable.rowActions = [
-                {
-                    name: "Edit",
-                    handler: (rowData) => {
-                        console.log(rowData);
-                        document.getElementById(`form-${data.tab_code}`).setFieldsValue(rowData);
-                        document.getElementById(`modal-${data.tab_code}`).open();
+            if (ticket_state == 0)
+                datatable.rowActions = [
+                    {
+                        name: "Edit",
+                        handler: (rowData) => {
+                            console.log(rowData);
+                            document.getElementById(`form-${data.tab_code}`).setFieldsValue(rowData);
+                            document.getElementById(`modal-${data.tab_code}`).open();
+                        },
+                        graphicsProps: { name: "edit" }
                     },
-                    graphicsProps: { name: "edit" }
-                },
-                {
-                    name: "Delete",
-                    handler: (rowData) => {
-                        $.ajax({
-                            type: "DELETE",
-                            headers: authHeader,
-                            url: `/api/v2/objects/${data.custom_object_id}/records/${rowData.bo_display_id}`,
-                            success: function () {
-                                datatable.rows = datatable.rows.filter((row) => row.bo_display_id !== rowData.bo_display_id);
-                            }
-                        });
-                    },
-                    graphicsProps: { name: "delete" }
-                }
-            ];
+                    {
+                        name: "Delete",
+                        handler: (rowData) => {
+                            $.ajax({
+                                type: "DELETE",
+                                headers: authHeader,
+                                url: `/api/v2/objects/${data.custom_object_id}/records/${rowData.bo_display_id}`,
+                                success: function () {
+                                    datatable.rows = datatable.rows.filter((row) => row.bo_display_id !== rowData.bo_display_id);
+                                }
+                            });
+                        },
+                        graphicsProps: { name: "delete" }
+                    }
+                ];
 
             initModal(
                 data,
@@ -296,7 +304,7 @@ jQuery(document).ready(function () {
                     const responseGetData = await getData(`/api/v2/objects/${tabConfig.custom_object_id}/records?query=ticket_id : '${ticket_id}'`);
                     const records = responseGetData.records;
                     datatable.rows = transformData(records);
-                    showNotification("success", values.bo_display_id ? "Create new successfully" : "Updated successfully");
+                    showNotification("success", !values.bo_display_id ? "Create new successfully" : "Updated successfully");
                     form.doReset(e);
                     modal[0].close();
                 }
