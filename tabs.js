@@ -142,11 +142,27 @@ jQuery(document).ready(function () {
         });
 
         if (Boolean(data.is_table)) {
-            const button = $("<fw-button>", {
+            const buttonContainer = $("<div>");
+            const buttonAdd = $("<fw-button>", {
                 "modal-trigger-id": `modal-${data.tab_code}`
             });
-            button.text("Add New");
-
+            buttonAdd.text("Add New");
+            const buttonSubmit = $("<fw-button>", {
+                id: `submit-${data.tab_code}`
+            });
+            buttonSubmit.text("Submit");
+            buttonSubmit.addEventListener("click", function () {
+                $.ajax({
+                    type: "PUT",
+                    url: `/api/v2/tickets/${ticket_id}`,
+                    data: JSON.stringify({ custom_fields: { ticket_state: 1 } }),
+                    headers: authHeader,
+                    success: async function (res) {
+                        console.log(res);
+                    }
+                });
+            });
+            buttonContainer.append(buttonAdd, buttonSubmit);
             const datatable = document.createElement("fw-data-table");
             datatable.columns = transformSchema(fields)?.map((item) => ({ text: item.label, key: item.name }));
             datatable.rows = transformData(records);
@@ -185,7 +201,7 @@ jQuery(document).ready(function () {
                 datatable
             );
 
-            section.append(button, datatable);
+            section.append(buttonContainer, datatable);
         } else {
             const form = document.createElement("fw-form");
             section.prepend(form);
