@@ -11,6 +11,7 @@ jQuery(document).ready(function () {
     const process_category_id = $("#tabs-script").data("process_category_id");
     const process_tabs_id = $("#tabs-script").data("process_tabs_id");
     const requester_id = $("#tabs-script").data("requester_id");
+    const ticket_state = $("#tabs-script").data("ticket_state");
 
     setTimeout(initChevron(), 300);
 
@@ -142,27 +143,32 @@ jQuery(document).ready(function () {
         });
 
         if (Boolean(data.is_table)) {
-            const buttonContainer = $("<div>");
+            const buttonContainer = $("<div>", { id: "button-tab" });
             const buttonAdd = $("<fw-button>", {
                 "modal-trigger-id": `modal-${data.tab_code}`
             });
             buttonAdd.text("Add New");
-            const buttonSubmit = $("<fw-button>", {
-                id: `submit-${data.tab_code}`
-            });
-            buttonSubmit.text("Submit");
-            buttonSubmit.on("click", function () {
-                $.ajax({
-                    type: "PUT",
-                    url: `/api/v2/tickets/${ticket_id}`,
-                    data: JSON.stringify({ custom_fields: { ticket_state: 1 } }),
-                    headers: authHeader,
-                    success: async function (res) {
-                        console.log(res);
-                    }
+            buttonContainer.append(buttonAdd);
+
+            if (ticket_state == 0) {
+                const buttonSubmit = $("<fw-button>", {
+                    id: `submit-${data.tab_code}`
                 });
-            });
-            buttonContainer.append(buttonAdd, buttonSubmit);
+                buttonSubmit.text("Submit");
+                buttonSubmit.on("click", function () {
+                    $.ajax({
+                        type: "PUT",
+                        url: `/api/v2/tickets/${ticket_id}`,
+                        data: JSON.stringify({ custom_fields: { ticket_state: 1 } }),
+                        headers: authHeader,
+                        success: async function () {
+                            showNotification("success", "Submitted request successfully");
+                        }
+                    });
+                });
+                $("#button-bottom").append(buttonSubmit);
+            }
+
             const datatable = document.createElement("fw-data-table");
             datatable.columns = transformSchema(fields)?.map((item) => ({ text: item.label, key: item.name }));
             datatable.rows = transformData(records);
@@ -290,6 +296,7 @@ jQuery(document).ready(function () {
                     const responseGetData = await getData(`/api/v2/objects/${tabConfig.custom_object_id}/records?query=ticket_id : '${ticket_id}'`);
                     const records = responseGetData.records;
                     datatable.rows = transformData(records);
+                    showNotification("success", values.bo_display_id ? "Create new successfully" : "Updated successfully");
                     form.doReset(e);
                     modal[0].close();
                 }
@@ -359,6 +366,10 @@ jQuery(document).ready(function () {
 
             return item;
         });
+    }
+
+    function showNotification(type = "success", content) {
+        document.querySelector("#type_toast_right").trigger({ type, content });
     }
 });
 
