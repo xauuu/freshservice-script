@@ -151,7 +151,7 @@ jQuery(document).ready(function () {
                 id: `submit-${data.tab_code}`
             });
             buttonSubmit.text("Submit");
-            buttonSubmit.addEventListener("click", function () {
+            buttonSubmit.on("click", function () {
                 $.ajax({
                     type: "PUT",
                     url: `/api/v2/tickets/${ticket_id}`,
