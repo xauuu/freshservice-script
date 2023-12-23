@@ -205,7 +205,8 @@ jQuery(document).ready(function () {
                     },
                     graphicsProps: { name: "delete" }
                 };
-            datatable.rowActions = [editAction, deleteAction];
+            datatable.rowActions = [editAction || {}, deleteAction || {}];
+            console.log([editAction || {}, deleteAction || {}], [editAction, deleteAction]);
 
             initModal(
                 data,
