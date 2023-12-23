@@ -12,6 +12,7 @@ jQuery(document).ready(function () {
     const process_tabs_id = $("#tabs-script").data("process_tabs_id");
     const requester_id = $("#tabs-script").data("requester_id");
     const ticket_state = $("#tabs-script").data("ticket_state");
+    const process_state_id = $("#tabs-script").data("process_state_id");
 
     setTimeout(initChevron(), 300);
 
@@ -132,7 +133,7 @@ jQuery(document).ready(function () {
         initChevron();
     }
 
-    async function initTabContent(data) {
+    async function initTabContent(data, permission) {
         const fields = JSON.parse(data.fields);
         const response = await getData(`/api/v2/objects/${data.custom_object_id}/records?query=ticket_id : '${ticket_id}'`);
         const records = response.records;
@@ -156,7 +157,7 @@ jQuery(document).ready(function () {
             buttonAdd.text("Add New");
             buttonContainer.append(buttonAdd);
 
-            if (ticket_state == 0) {
+            if (permission.can_edit) {
                 const buttonSubmit = $("<fw-button>", {
                     id: `submit-${data.tab_code}`
                 });
@@ -179,32 +180,32 @@ jQuery(document).ready(function () {
             const datatable = document.createElement("fw-data-table");
             datatable.columns = transformSchema(fields)?.map((item) => ({ text: item.label, key: item.name }));
             datatable.rows = transformData(records);
-            if (ticket_state == 0)
-                datatable.rowActions = [
-                    {
-                        name: "Edit",
-                        handler: (rowData) => {
-                            console.log(rowData);
-                            document.getElementById(`form-${data.tab_code}`).setFieldsValue(rowData);
-                            document.getElementById(`modal-${data.tab_code}`).open();
-                        },
-                        graphicsProps: { name: "edit" }
+            if (permission.can_edit)
+                var editAction = {
+                    name: "Edit",
+                    handler: (rowData) => {
+                        console.log(rowData);
+                        document.getElementById(`form-${data.tab_code}`).setFieldsValue(rowData);
+                        document.getElementById(`modal-${data.tab_code}`).open();
                     },
-                    {
-                        name: "Delete",
-                        handler: (rowData) => {
-                            $.ajax({
-                                type: "DELETE",
-                                headers: authHeader,
-                                url: `/api/v2/objects/${data.custom_object_id}/records/${rowData.bo_display_id}`,
-                                success: function () {
-                                    datatable.rows = datatable.rows.filter((row) => row.bo_display_id !== rowData.bo_display_id);
-                                }
-                            });
-                        },
-                        graphicsProps: { name: "delete" }
-                    }
-                ];
+                    graphicsProps: { name: "edit" }
+                };
+            if (permission.can_delete)
+                var deleteAction = {
+                    name: "Delete",
+                    handler: (rowData) => {
+                        $.ajax({
+                            type: "DELETE",
+                            headers: authHeader,
+                            url: `/api/v2/objects/${data.custom_object_id}/records/${rowData.bo_display_id}`,
+                            success: function () {
+                                datatable.rows = datatable.rows.filter((row) => row.bo_display_id !== rowData.bo_display_id);
+                            }
+                        });
+                    },
+                    graphicsProps: { name: "delete" }
+                };
+            datatable.rowActions = [editAction, deleteAction];
 
             initModal(
                 data,
@@ -237,12 +238,15 @@ jQuery(document).ready(function () {
 
     getData(`/api/v2/tickets/${ticket_id}/requested_items`).then(async (response) => {
         const requestedItem = response.requested_items[0];
-        const tabResponse = await getData(`/api/v2/objects/${process_tabs_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`);
+        const [tabResponse, permission] = await Promise.all([
+            getData(`/api/v2/objects/${process_tabs_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`),
+            getData(`/api/v2/objects/${process_state_id}/records?query=service_item_id : '${requestedItem.service_item_id}' AND state : '${ticket_state}'`)
+        ]);
         tabResponse?.records.forEach(async (item) => {
-            const visible = await checkRole(requester_id, item.data);
-            if (visible) {
+            const visible = await checkRole(requester_id, permission.data);
+            if (visible && permission.data.can_view) {
                 insertTab(item.data);
-                initTabContent(item.data);
+                initTabContent(item.data, permission.data);
             }
         });
     });
