@@ -238,10 +238,11 @@ jQuery(document).ready(function () {
 
     getData(`/api/v2/tickets/${ticket_id}/requested_items`).then(async (response) => {
         const requestedItem = response.requested_items[0];
-        const [tabResponse, permission] = await Promise.all([
+        const [tabResponse, permissionResponse] = await Promise.all([
             getData(`/api/v2/objects/${process_tabs_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`),
             getData(`/api/v2/objects/${process_state_id}/records?query=service_item_id : '${requestedItem.service_item_id}' AND state : '${ticket_state}'`)
         ]);
+        const permission = permissionResponse.records[0];
         tabResponse?.records.forEach(async (item) => {
             const visible = await checkRole(requester_id, permission.data);
             if (visible && permission.data.can_view) {
