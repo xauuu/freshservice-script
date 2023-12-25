@@ -11,6 +11,7 @@ jQuery(document).ready(function () {
     const process_category_id = $("#tabs-script").data("process_category_id");
     const process_tabs_id = $("#tabs-script").data("process_tabs_id");
     const requester_id = $("#tabs-script").data("requester_id");
+    const ticket_requester_id = $("#tabs-script").data("ticket_requester_id");
     const ticket_state = $("#tabs-script").data("ticket_state");
     const process_state_id = $("#tabs-script").data("process_state_id");
 
@@ -246,7 +247,7 @@ jQuery(document).ready(function () {
         const permission = permissionResponse.records[0];
         tabResponse?.records.forEach(async (item) => {
             const visible = await checkRole(requester_id, permission.data);
-            if (visible && permission.data.can_view) {
+            if ((visible || (permission.data.apply_to_requester && requester_id == ticket_requester_id)) && permission.data.can_view) {
                 insertTab(item.data);
                 initTabContent(item.data, permission.data);
             }
