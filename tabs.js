@@ -157,7 +157,7 @@ jQuery(document).ready(function () {
             buttonAdd.text("Add New");
             buttonContainer.append(buttonAdd);
 
-            if (permission.can_edit) {
+            if (permission.can_submit && permission.next_state) {
                 const buttonSubmit = $("<fw-button>", {
                     id: `submit-${data.tab_code}`
                 });
@@ -166,7 +166,7 @@ jQuery(document).ready(function () {
                     $.ajax({
                         type: "PUT",
                         url: `/api/v2/tickets/${ticket_id}`,
-                        data: JSON.stringify({ custom_fields: { ticket_state: 1 } }),
+                        data: JSON.stringify({ custom_fields: { ticket_state: Number(permission.next_state) } }),
                         headers: authHeader,
                         success: async function () {
                             showNotification("success", "Submitted request successfully");
