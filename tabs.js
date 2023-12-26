@@ -14,6 +14,7 @@ jQuery(document).ready(function () {
     const ticket_requester_id = $("#tabs-script").data("ticket_requester_id");
     const ticket_state = $("#tabs-script").data("ticket_state");
     const process_state_id = $("#tabs-script").data("process_state_id");
+    const process_tab_permission_id = $("#tabs-script").data("process_tab_permission_id");
 
     setTimeout(initChevron(), 300);
 
@@ -158,26 +159,6 @@ jQuery(document).ready(function () {
             buttonAdd.text("Add New");
             buttonContainer.append(buttonAdd);
 
-            if (permission.can_submit && permission.next_state) {
-                const buttonSubmit = $("<fw-button>", {
-                    id: `submit-${data.tab_code}`
-                });
-                buttonSubmit.text("Submit");
-                buttonSubmit.on("click", function () {
-                    $.ajax({
-                        type: "PUT",
-                        url: `/api/v2/tickets/${ticket_id}`,
-                        data: JSON.stringify({ custom_fields: { ticket_state: Number(permission.next_state) } }),
-                        headers: authHeader,
-                        success: async function () {
-                            showNotification("success", "Submitted request successfully");
-                            window.location.reload(true);
-                        }
-                    });
-                });
-                $("#button-bottom").append(buttonSubmit);
-            }
-
             const datatable = document.createElement("fw-data-table");
             datatable.columns = transformSchema(fields)?.map((item) => ({ text: item.label, key: item.name }));
             datatable.rows = transformData(records);
@@ -206,8 +187,9 @@ jQuery(document).ready(function () {
                     },
                     graphicsProps: { name: "delete" }
                 };
-            datatable.rowActions = [editAction || {}, deleteAction || {}];
-            console.log([editAction || {}, deleteAction || {}], [editAction, deleteAction]);
+            const rowActions = [editAction, deleteAction].filter((action) => action !== undefined);
+            if (rowActions.length > 0) datatable.rowActions = rowActions;
+            console.log([editAction, deleteAction]);
 
             initModal(
                 data,
@@ -240,18 +222,52 @@ jQuery(document).ready(function () {
 
     getData(`/api/v2/tickets/${ticket_id}/requested_items`).then(async (response) => {
         const requestedItem = response.requested_items[0];
-        const [tabResponse, permissionResponse] = await Promise.all([
-            getData(`/api/v2/objects/${process_tabs_id}/records?query=service_item_id : '${requestedItem.service_item_id}'`),
+        const [tabPerResponse, stateResponse] = await Promise.all([
+            getData(
+                `/api/v2/objects/${process_tab_permission_id}/records?query=service_item_id : '${requestedItem.service_item_id}' AND state : '${ticket_state}'`
+            ),
             getData(`/api/v2/objects/${process_state_id}/records?query=service_item_id : '${requestedItem.service_item_id}' AND state : '${ticket_state}'`)
         ]);
-        const permission = permissionResponse.records[0];
-        tabResponse?.records.forEach(async (item) => {
-            const visible = await checkRole(requester_id, permission.data);
-            if ((visible || (permission.data.apply_to_requester && requester_id == ticket_requester_id)) && permission.data.can_view) {
-                insertTab(item.data);
-                initTabContent(item.data, permission.data);
+        const state = stateResponse.records[0]?.data;
+
+        if (state.can_submit && state.next_state) {
+            const buttonSubmit = $("<fw-button>");
+            buttonSubmit.text("Submit");
+            buttonSubmit.on("click", function () {
+                $.ajax({
+                    type: "PUT",
+                    url: `/api/v2/tickets/${ticket_id}`,
+                    data: JSON.stringify({ custom_fields: { ticket_state: Number(state.next_state) } }),
+                    headers: authHeader,
+                    success: async function () {
+                        showNotification("success", "Submitted request successfully");
+                        window.location.reload(true);
+                    }
+                });
+            });
+            $("#button-bottom").append(buttonSubmit);
+        }
+        const processedTabCodes = new Set();
+        for (const permission of tabPerResponse?.records || []) {
+            const tabCodeList = permission.data.tab_code?.split(";");
+            if (!tabCodeList || tabCodeList.length === 0) return;
+
+            for (const tabCode of tabCodeList) {
+                if (!processedTabCodes.has(tabCode)) {
+                    const tabResponse = await getData(
+                        `/api/v2/objects/${process_tabs_id}/records?query=service_item_id : '${requestedItem.service_item_id}' AND tab_code : '${tabCode}'`
+                    );
+                    const tab = tabResponse.records[0]?.data;
+                    const visible = await checkRole(requester_id, permission.data);
+
+                    if ((visible || (permission.data.apply_to_requester && requester_id == ticket_requester_id)) && permission.data.can_view) {
+                        insertTab(tab);
+                        initTabContent(tab, permission.data);
+                        processedTabCodes.add(tabCode);
+                    }
+                }
             }
-        });
+        }
     });
 
     async function getMemberRequesterGroup(groups) {
