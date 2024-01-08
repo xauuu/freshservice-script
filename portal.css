@@ -49,7 +49,8 @@
   --text-heading: #fff;
 }
 .custom-portal[site=real-estate],
-.custom-portal[site=corp]{
+.custom-portal[site=corp],
+.custom-portal[site=corpen]{
   --primary-color: #2579ff;
   --secondary-color: #9ea7b1;
   --footer-color: #f6f8f9;
